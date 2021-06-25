@@ -1,10 +1,39 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TextInput, Image, StatusBar, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Image, StatusBar, TouchableOpacity, SafeAreaView } from 'react-native';
 import GradientButton from '../common/GradientButton'
 import LinearGradient from 'react-native-linear-gradient';
-
+import { connect } from 'react-redux'
+import {sendOTPCall} from '../service/Api'
+import { forgetError, forgetResponse, forgetRequest } from '../redux/actions/forgetActions'
 const ForgetPassword = ({navigation}) => {
+
+    sendOTPServiceCall=()=>{
+        //   if(phoneNumber == ''){
+// return
+        //   }else
+        //   {
+            
+             const data={
+                 phone:'+923350520050'
+             }
+              sendOTPCall(data).then((response) => {
+                if (response.status === 1) {
+                    console.log('response', response.data)
+                    navigation.navigate('Verification', {screenName:'forget'})
+                }
+                else {
+                    console.log('response error', response.status)
+                }
+            }).catch((error) => {
+                console.log('error', error)
+            })
+        //   }
+      }
+
     return (
+        <SafeAreaView  style={{
+            flex: 1, backgroundColor:'#38ef7d'
+        }}>
         <LinearGradient
             // Background Linear Gradient
             colors={['#38ef7d', '#11998e']}
@@ -12,9 +41,7 @@ const ForgetPassword = ({navigation}) => {
                 flex: 1, alignItems: 'center',
             }}
         >
-            <Text style={{ marginTop: StatusBar.currentHeight || 40, fontWeight: 'bold', color: 'white', fontSize: 25 }}>Forget Password</Text>
-
-            <Image source={require('../../assets/images/forgetPassword.png')} style={{ height: 200, width: '80%', marginTop: 15 }} />
+            <Image source={require('../../assets/images/forgetPassword.png')} style={{ height: 200, width: '80%', marginTop: 100 }} />
             <Text style={{ marginTop: 10, color: 'white', fontSize: 15 }}>Please enter your phone number</Text>
 
             <Text style={{ color: 'white', fontSize: 15, width: '90%', textAlign: 'center' }}>You will receive a code to create a new password via sms.</Text>
@@ -28,18 +55,18 @@ const ForgetPassword = ({navigation}) => {
                         keyboardType="numeric"
                     />
                 </View>
-                <GradientButton height={60} title={'Send'} width={'90%'} />
+                <GradientButton height={60} title={'Send'} width={'90%'} action={()=>sendOTPServiceCall()}/>
 
             </View>
 
             <View style={styles.bottomView}>
                 <Text style={{ fontSize: 15, marginRight: 10 }}>Don't have account?</Text>
                 <TouchableOpacity>
-                    <Text style={{ color: 'blue', fontSize: 18, textDecorationLine: 'underline' }}>SignUp</Text>
+                    <Text style={{ color: 'blue', fontSize: 18, textDecorationLine: 'underline' }}>Help</Text>
                 </TouchableOpacity>
             </View>
         </LinearGradient>
-
+</SafeAreaView>
     )
 }
 
@@ -86,4 +113,10 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
 });
-export default ForgetPassword;
+const mapStateToProps = state => {
+    const { forgetReducer } = state
+    const { phone, confirmResult, loading, tokenForReset } = forgetReducer
+    return { phone, confirmResult, loading, tokenForReset }
+}
+
+export default connect(mapStateToProps, {  forgetResponse, forgetRequest, forgetError })(ForgetPassword)

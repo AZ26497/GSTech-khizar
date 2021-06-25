@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import Dashboard from '../screen/Dashboard/Dashboard'
 
 const Home =()=> {
 
     return (
+   
       <Dashboard />
     )
   }

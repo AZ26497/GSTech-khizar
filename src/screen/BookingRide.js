@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react';
-import { StyleSheet, Text, View, Image, Dimensions, FlatList, Modal, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, Dimensions, FlatList, Modal, TouchableOpacity , SafeAreaView} from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker, Callout, Circle, Overlay, Polyline } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation'
 import RideListItem from '../component/RideListItem';
@@ -16,12 +16,11 @@ const LONGITUDE = 73.084488;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const BookingRide=({navigation})=>{
-
-  const {initialRegion, setInitialRegion} = useState({
-    latitude: 33.738045, longitude: 73.084488,
-    latitudeDelta: LATITUDE_DELTA,
-    longitudeDelta: LONGITUDE_DELTA,
-  })
+  const [myLatitude, setMyLatitude] = useState(31.5204);
+    const [myLongitude, setMyLongitude] = useState(74.3587);
+    const [myDirection, setMyDirection] = useState({ latitude: 0.000000, longitude: 0.000000, latitudeDelta: 0.0922, longitudeDelta: 0.0421 });
+ 
+    const [otherDirection, setOtherDirection] = useState({ latitude: 31.5204, longitude: 74.3587, latitudeDelta: 0.0922, longitudeDelta: 0.0421 });
 const {coordinates, setCoordinates} = useState([
   {
     latitude: 33.738045,
@@ -47,22 +46,6 @@ const {coordinates, setCoordinates} = useState([
         id: '58694a0f-3da1-471f-bd96-145571e29d72',
         title: 'Third Item',
       },
-      {
-        id: '58694a0f-3da1-471f-bd96-145571e29d89',
-        title: 'Third Item',
-      },
-      {
-        id: '58694a0f-3da1-471f-bd96-145571e29d67',
-        title: 'Third Item',
-      },
-      {
-        id: '58694a0f-3da1-471f-bd96-145571e29d67',
-        title: 'Fourth Item',
-      },
-      {
-        id: '58694a0f-3da1-471f-bd96-145571e29d67',
-        title: 'Fifth Item',
-      },
     ];
     const renderItem = ({ item }) => (
       <RideListItem />
@@ -70,6 +53,9 @@ const {coordinates, setCoordinates} = useState([
 
 
     return (
+      <SafeAreaView  style={{
+        flex: 1, backgroundColor:'#38ef7d'
+    }}>
       <View style={styles.container}>
  <MapView
           initialRegion={{
@@ -80,14 +66,14 @@ const {coordinates, setCoordinates} = useState([
           }}
           style={StyleSheet.absoluteFill}
         >
-          {coordinates.map((coordinate, index) =>
+          {/* {coordinates.map((coordinate, index) =>
             <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} />
-          )}
-          {(coordinates.length >= 2) && (
+          )} */}
+          {/* {(coordinates.length >= 2) && ( */}
             <MapViewDirections
-              origin={coordinates[0]}
+              origin={myDirection}
               // waypoints={(this.state.coordinates.length > 2) ? this.state.coordinates.slice(1, -1) : null}
-              destination={coordinates[coordinates.length - 1]}
+              destination={otherDirection}
               apikey={GOOGLE_MAPS_APIKEY}
               strokeWidth={6}
               strokeColor="#38ef7d"
@@ -96,7 +82,7 @@ const {coordinates, setCoordinates} = useState([
             //   console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
             // }}
             />
-          )}
+          {/* )} */}
         </MapView>
 
         <View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'space-around', bottom: 0, backgroundColor: 'white', height: '40%', width: '100%', position: 'absolute', borderTopRightRadius: 30.0, borderTopLeftRadius: 30.0, borderTopColor: 'yellow', paddingTop: 10, paddingLeft: 20, paddingRight: 10, paddingBottom: 10 }}>
@@ -130,7 +116,7 @@ const {coordinates, setCoordinates} = useState([
   </Text>
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
-              <TouchableOpacity style={{flexDirection:'row', alignItems: 'center', }} onPress={()=>this.props.navigation.navigate('Payment')}>
+              <TouchableOpacity style={{flexDirection:'row', alignItems: 'center', }} onPress={()=>navigation.navigate('Payment')}>
                 {/* <Image source={require('../../assets/images/card.png')} style={{ height: 30, width: 40 }} />  */}
                 <Ionicons name="cash-outline" size={30}></Ionicons>
                 <Text style={{ textAlign: 'left', fontSize:16 }}> Cash</Text>
@@ -145,6 +131,7 @@ const {coordinates, setCoordinates} = useState([
           </View>
         </View>
       </View>
+      </SafeAreaView>
     )
 }
 

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, View, FlatList, Image, Dimensions, Platform } from 'react-native';
+import React, { Component, useState } from 'react';
+import { StyleSheet, Text, View, FlatList, Image, Dimensions, Platform, SafeAreaView } from 'react-native';
 import GradientButton from '../common/GradientButton'
 import MapView, { PROVIDER_GOOGLE, Polyline, Marker } from 'react-native-maps';
 import { requestLocationPermission } from '../common/Permissions'
@@ -36,6 +36,9 @@ const {coordinates, setCoordinates} = useState([
 )
 
     return (
+      <SafeAreaView  style={{
+        flex: 1, backgroundColor:'#38ef7d'
+    }}>
       <View style={styles.container}>
 
         <View style={{
@@ -83,6 +86,7 @@ const {coordinates, setCoordinates} = useState([
         <RideSummaryAndDetail navigation={navigation}/>
 
       </View>
+      </SafeAreaView>
     )
   }
 

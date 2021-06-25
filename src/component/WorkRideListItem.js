@@ -14,6 +14,7 @@ export default class WorkRideListItem extends Component {
             Linking.openURL(phoneNumber);
          };
         return (
+            <TouchableOpacity activeOpacity={0.8} onPress={this.props.action}>
             <View style={styles.container}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: 30, width: '100%', marginTop:5 }}>
                     <Text style={{fontWeight:'bold', color:'black'}}>Mr.Customer</Text>
@@ -43,6 +44,7 @@ export default class WorkRideListItem extends Component {
                     </View>
                 </View>
             </View>
+            </TouchableOpacity>
         )
     }
 }

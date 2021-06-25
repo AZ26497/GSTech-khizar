@@ -17,7 +17,7 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-
+import { FAB } from 'react-native-paper'
 import {
   Colors,
   DebugInstructions,
@@ -47,6 +47,7 @@ import BookingRide from './src/screen/BookingRide';
 import CustomAlert from './src/common/CustomAlert';
 import PaymentMethod from './src/screen/PaymentMethod';
 import RideDetail from './src/screen/RideDetail';
+import ResetPassword from './src/screen/ResetPassword';
 
 
 const bottomTabStack = createMaterialBottomTabNavigator()
@@ -69,6 +70,12 @@ const bottomStackScreen = () => {
 
       <bottomTabStack.Screen options={{
         tabBarLabel: 'History',
+        title: 'History',
+            headerShown: true,
+            headerTransparent: true,
+            headerTitleStyle: { alignSelf: 'center', color: 'white', marginRight: 10, fontWeight: 'bold', fontSize: 25 },
+            headerTintColor: 'white',
+            headerBackTitle:'',
         tabBarIcon: ({ color, size }) => (
           <Ionicons name={'card-outline'} size={26} color={color} />
         ),
@@ -81,123 +88,135 @@ const bottomStackScreen = () => {
         ),
       }} name="Wallet" component={Wallet} />
 
-      <bottomTabStack.Screen options={{
+      {/* <bottomTabStack.Screen options={{
         tabBarLabel: 'Menu',
         title: 'Header title',
         tabBarIcon: ({ color, size }) => (
-          <Ionicons name={'menu-outline'} size={26} color={color} />
+          <ActionButton active={true} style={{
+            borderWidth: 1,
+            borderColor: 'rgba(0,0,0,0.2)',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: 70,
+            position: 'absolute',
+            bottom: 10,
+            right: 10,
+            height: 70,
+            backgroundColor: '#fff',
+            borderRadius: 100,
+          }}>
+          <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={() => console.log("notes tapped!")}>
+            <Ionicons name="md-create" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+          <ActionButton.Item buttonColor='#3498db' title="Notifications" onPress={() => {}}>
+            <Ionicons name="md-notifications-off" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+          <ActionButton.Item buttonColor='#1abc9c' title="All Tasks" onPress={() => {}}>
+            <Ionicons name="md-done-all" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+        </ActionButton>
+          // <Ionicons name={'menu-outline'} size={26} color={color} />
         ),
-      }} name="Menu" component={Menu} />
+      }} name="Menu" component={Menu} /> */}
 
     </bottomTabStack.Navigator>
 
   );
 }
-const Section = ({ children, title }): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
+
 
 const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
 
   return (
-    // <SafeAreaView style={backgroundStyle}>
-    //   <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-    //   <ScrollView
-    //     contentInsetAdjustmentBehavior="automatic"
-    //     style={backgroundStyle}>
-    //     <Header />
-        <NavigationContainer>
-          <Stack.Navigator screenOptions={{
-            headerShown: false
-          }}>
-            <Stack.Screen name="SignIn" component={SignIn} />
-            <Stack.Screen name="Home" children={bottomStackScreen} />
-            <Stack.Screen name="WorkRide" component={WorkRide} options={{
-              title: 'Scheduled Rides',
-              headerShown: true,
-              headerTransparent: true,
-              headerTitleStyle: { alignSelf: 'center', color: 'white', marginRight: 10, fontWeight: 'bold', fontSize: 25 },
-              headerTintColor: 'white'
-            }} />
-            <Stack.Screen name="CustomAlert" component={CustomAlert} />
-            <Stack.Screen name="Verification" component={VerificationCode} />
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{
+          headerShown: false
+        }}>
+          <Stack.Screen name="SignIn" component={SignIn} />
+          <Stack.Screen name="Home" children={bottomStackScreen} />
+          <Stack.Screen name="WorkRide" component={WorkRide} options={{
+            title: 'Scheduled Rides',
+            headerShown: true,
+            headerTransparent: true,
+            headerTitleStyle: { alignSelf: 'center', color: 'white', marginRight: 10, fontWeight: 'bold', fontSize: 25 },
+            headerTintColor: 'white',
+            headerBackTitle:''
+          }} />
+          <Stack.Screen name="CustomAlert" component={CustomAlert} />
+          <Stack.Screen name="Verification" component={VerificationCode} options={{
+            title: 'Verification',
+            headerShown: true,
+            headerTransparent: true,
+            headerTitleStyle: { alignSelf: 'center', color: 'white', marginRight: 10, fontWeight: 'bold', fontSize: 25 },
+            headerTintColor: 'white',
+            headerBackTitle:''
 
-            <Stack.Screen name="PersonalRide" component={PersonalRide} options={{
-              title: 'Booking Now',
-              headerShown: true,
-              headerTransparent: true,
-              headerTitleStyle: { alignSelf: 'center', color: 'black', marginRight: 15, fontWeight: 'bold', fontSize: 25 },
+          }} />
 
-            }} />
+          <Stack.Screen name="PersonalRide" component={PersonalRide} options={{
+            title: 'Booking Now',
+            headerShown: true,
+            headerTransparent: true,
+            headerBackTitle:'',
+            headerTitleStyle: { alignSelf: 'center', color: 'black', marginRight: 15, fontWeight: 'bold', fontSize: 25 },
 
-            <Stack.Screen name="RideDetail" component={RideDetail} options={{
-              title: 'Ride Detail',
-              headerShown: true,
-              headerTransparent: true,
-              headerTitleStyle: { alignSelf: 'center', color: 'black', marginRight: 15, fontWeight: 'bold', fontSize: 25 },
+          }} />
 
-            }} />
-            <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
-            <Stack.Screen name="Schedule" component={ScheduleRide} options={{
-              title: 'Schedule Date',
-              headerShown: true,
-              headerTransparent: true,
-              headerTitleStyle: { alignSelf: 'center', color: 'white', marginRight: 10, fontWeight: 'bold', fontSize: 25 },
-              headerTintColor: 'white'
+          <Stack.Screen name="RideDetail" component={RideDetail} options={{
+            title: 'Ride Detail',
+            headerShown: true,
+            headerTransparent: true,
+            headerBackTitle:'',
+            headerTitleStyle: { alignSelf: 'center', color: 'black', marginRight: 15, fontWeight: 'bold', fontSize: 25 },
+
+          }} />
+          <Stack.Screen name="ForgetPassword" component={ForgetPassword} options={{
+            title: 'Forget Password',
+            headerShown: true,
+            headerTransparent: true,
+            headerTitleStyle: { alignSelf: 'center', color: 'white', marginRight: 10, fontWeight: 'bold', fontSize: 25 },
+            headerTintColor: 'white',
+            headerBackTitle:''
+          }} />
+          <Stack.Screen name="Schedule" component={ScheduleRide} options={{
+            title: 'Schedule Date',
+            headerShown: true,
+            headerTransparent: true,
+            headerTitleStyle: { alignSelf: 'center', color: 'white', marginRight: 10, fontWeight: 'bold', fontSize: 25 },
+            headerTintColor: 'white',
+            headerBackTitle:''
+          }} />
+
+          <Stack.Screen name="ResetPassword" component={ResetPassword} options={{
+            title: 'Reset Password',
+            headerShown: true,
+            headerTransparent: true,
+            headerTitleStyle: { alignSelf: 'center', color: 'white', marginRight: 10, fontWeight: 'bold', fontSize: 25 },
+            headerTintColor: 'white',
+            headerBackTitle:''
+          }} />
+
+          <Stack.Screen name="Booking" component={BookingRide} options={{
+            title: 'Ride Options',
+            headerShown: true,
+            headerTransparent: true,
+            headerTitleStyle: { alignSelf: 'center', color: 'black', marginRight: 10, fontWeight: 'bold', fontSize: 25 },
+            headerTintColor: 'black',
+            headerBackTitle:''
+          }} />
+
+          <Stack.Screen name="Payment" component={PaymentMethod} options={{
+            title: 'Payment Method',
+            headerShown: true,
+            headerTransparent: true,
+            headerTitleStyle: { alignSelf: 'center', color: 'white', marginRight: 10, fontWeight: 'bold', fontSize: 25 },
+            headerTintColor: 'white',
+            headerBackTitle:''
+          }} />
 
 
-            }} />
-
-            <Stack.Screen name="Booking" component={BookingRide} options={{
-              title: 'Ride Options',
-              headerShown: true,
-              headerTransparent: true,
-              headerTitleStyle: { alignSelf: 'center', color: 'black', marginRight: 10, fontWeight: 'bold', fontSize: 25 },
-              headerTintColor: 'black'
-
-            }} />
-
-            <Stack.Screen name="Payment" component={PaymentMethod} options={{
-              title: 'Payment Method',
-              headerShown: true,
-              headerTransparent: true,
-              headerTitleStyle: { alignSelf: 'center', color: 'white', marginRight: 10, fontWeight: 'bold', fontSize: 25 },
-              headerTintColor: 'white'
-
-            }} />
-
-
-          </Stack.Navigator>
-        </NavigationContainer>
-    //   </ScrollView>
-    // </SafeAreaView>
+        </Stack.Navigator>
+      </NavigationContainer>
   );
 };
 
@@ -217,6 +236,11 @@ const styles = StyleSheet.create({
   },
   highlight: {
     fontWeight: '700',
+  },
+  actionButtonIcon: {
+    fontSize: 20,
+    height: 22,
+    color: 'white',
   },
 });
 
