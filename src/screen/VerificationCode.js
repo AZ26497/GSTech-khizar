@@ -118,9 +118,16 @@ const VerificationCode = ({ navigation, route }) => {
                             <GradientButton height={60} width={'80%'} title={'Send'} margin={5} action={() => verifyOTPCode(otp, 'verify')} />
                         }
 
-                        <Text style={{ fontSize: 15, marginTop: 20 }}>{timerCount}</Text>
-                        <TouchableOpacity disabled={disableResendBtn} onPress={() => verifyOTPCode('', 'resend')}>
-                            <Text style={{ fontSize: 15, color: disableResendBtn ? 'gray' : 'black' }}>Resend OTP</Text>
+                        {timerCount>0?(
+                            <Text style={{ fontSize: 15, marginTop: 20 }}>{timerCount}</Text>
+                        ):(null)}
+                        <TouchableOpacity 
+                        style={{marginTop: 20 }}
+                        disabled={timerCount<1?false:true} onPress={() =>
+                             verifyOTPCode('', 'resend')
+                            // alert("hi")
+                             }>
+                            <Text style={{ fontSize: 15, color: timerCount<1? 'black' : 'gray' }}>Resend OTP</Text>
                         </TouchableOpacity>
                     </View>
 

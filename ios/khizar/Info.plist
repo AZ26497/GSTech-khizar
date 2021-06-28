@@ -35,8 +35,12 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Maahir app want to access your current location to get near by maahir for booking</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Maahir app want to access your current location to get near by maahir for booking</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Allow the app to know your location</string>
+	<string>Maahir app want to access your current location to get near by maahir for booking</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>

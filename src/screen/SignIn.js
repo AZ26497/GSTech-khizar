@@ -36,7 +36,8 @@ const SignIn = ({navigation, route}) => {
     setShowPassword({showPassword: !showPassword});
   };
 
-  mobileNumberValidate = text => {
+  function mobileNumberValidate(text){
+   
     const reg =
       /^[0-9]{10}$/; ////^0|08[0-9]{9,}$/;///^[0]?[789]\d{9}$/;
     setPhoneRegix(reg);
