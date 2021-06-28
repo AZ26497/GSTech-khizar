@@ -125,7 +125,6 @@ const VerificationCode = ({ navigation, route }) => {
                         style={{marginTop: 20 }}
                         disabled={timerCount<1?false:true} onPress={() =>
                              verifyOTPCode('', 'resend')
-                            // alert("hi")
                              }>
                             <Text style={{ fontSize: 15, color: timerCount<1? 'black' : 'gray' }}>Resend OTP</Text>
                         </TouchableOpacity>
