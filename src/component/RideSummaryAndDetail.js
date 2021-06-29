@@ -45,7 +45,7 @@ export default class RideSummaryAndDetail extends Component {
         {/* Ride Summary */}
 
 
-        <View style={{width: '90%', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', borderColor: '#d3d3d3', borderWidth: 1, borderRadius: 20, position: 'absolute', bottom: 20}}>
+        <View style={{width: '90%', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between',  borderRadius: 20, position: 'absolute', bottom: 20}}>
           <View style={{ flexDirection: 'row', height: 70,width:'100%', margin:10}}>
           <View style={{ flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between', marginLeft:5 , marginRight:5}}>
               <Text style={{textAlign:'left', fontSize:12}}>4:35</Text>

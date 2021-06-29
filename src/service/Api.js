@@ -17,10 +17,10 @@ export const requestLogin = (data) => {
             },
 
         }).then(response => {
-            console.log('API', 'requestLogin-response.status', response);
+            console.log('API', 'request Login status', response);
             resolve(response.data);
         }).catch(error => {
-            console.log('API', 'requestPost-error', error);
+            console.log('API', 'request Login error', error);
             reject(error);
         });
     });
@@ -40,10 +40,10 @@ export const verifyResendOTP = (data, callType) => {
             },
 
         }).then(response => {
-            console.log('API', 'requestLogin-response.status', response);
+            console.log('API', 'verify/Resend OTP status', response);
             resolve(response.data);
         }).catch(error => {
-            console.log('API', 'requestPost-error', error);
+            console.log('API', 'verify/Resend OTP error', error);
             reject(error);
         });
     });
@@ -62,10 +62,10 @@ export const sendOTPCall = (data) => {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
         }).then(response => {
-            console.log('API', 'requestLogin-response.status', response);
+            console.log('API', 'send OTP status', response);
             resolve(response.data);
         }).catch(error => {
-            console.log('API', 'requestPost-error', error);
+            console.log('API', 'send OTP error', error);
             reject(error);
         });
     });
@@ -85,10 +85,10 @@ export const resetPasswordCall = (data) => {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
         }).then(response => {
-            console.log('API', 'requestLogin-response.status', response);
+            console.log('API', 'Reset Password status', response);
             resolve(response.data);
         }).catch(error => {
-            console.log('API', 'requestPost-error', error);
+            console.log('API', 'Reset Password error', error);
             reject(error);
         });
     });
@@ -97,25 +97,71 @@ export const resetPasswordCall = (data) => {
 
 const getToken=async()=> {
         const token = await AsyncStorage.getItem('token')
-        console.log('Token ', JSON.parse(token))
+        console.log('Token:', token)
         return token;
 }
-export const getScheduledRideList = () => {
+export const getScheduledRideList = async () => {
     console.log('Get List')
-    const AUTH_TOKEN = getToken()
-    console.log("Token",AUTH_TOKEN);
+    const AUTH_TOKEN = await getToken()
+    const newOne = 'Bearer '+JSON.parse(AUTH_TOKEN)
+    console.log("Token of api calling",newOne);
     return new Promise((resolve, reject) => {
         var qs = require('qs');
         axios.get(('http://162.0.236.163:8000/schedule'), {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
-                'Authorization': 'Bearer '+'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGM2NTdlZjk2M2U3Nzk4NDI0Y2JkY2QiLCJwaG9uZSI6Iis5MjMzNTA1MjAwNTAiLCJpYXQiOjE2MjQ1MjA5NjIsImV4cCI6MTYyNDUzODk2Mn0.4lfcEC7Dym8VdSuzBx--CU7RKHxgLOeObY7f1CS98bk',
+                'Authorization': newOne,
             },
         }).then(response => {
-            console.log('API', 'requestLogin-response.status', response);
+            console.log('API', 'Get Scheduled Ride list ', response);
             resolve(response.data);
         }).catch(error => {
-            console.log('API', 'requestPost-error', error);
+            console.log('API', 'Get Scheduled Ride list error', error);
+            reject(error);
+        });
+    });
+}
+
+export const deleteScheduledRideCall = async (itemID) => {
+    console.log('Get List')
+    const AUTH_TOKEN = await getToken()
+    const newOne = 'Bearer '+JSON.parse(AUTH_TOKEN)
+    console.log("Token of api calling",newOne);
+    return new Promise((resolve, reject) => {
+        var qs = require('qs');
+        axios.delete(('http://162.0.236.163:8000/schedule/'+itemID), {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': newOne,
+            },
+        }).then(response => {
+            console.log('API', 'Delete scheduled ride response', response);
+            resolve(response.data);
+        }).catch(error => {
+            console.log('API', 'Delete scheduled ride error', error);
+            reject(error);
+        });
+    });
+}
+
+
+export const getScheduleRideDetails = async (itemID) => {
+    console.log('Get List')
+    const AUTH_TOKEN = await getToken()
+    const newOne = 'Bearer '+JSON.parse(AUTH_TOKEN)
+    console.log("Token of api calling",newOne);
+    return new Promise((resolve, reject) => {
+        var qs = require('qs');
+        axios.get(('http://162.0.236.163:8000/schedule/'+itemID), {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': newOne,
+            },
+        }).then(response => {
+            console.log('API', 'SCHEDULED RIDE DETAILS RESPONSE', response);
+            resolve(response.data);
+        }).catch(error => {
+            console.log('API', 'SCHEDULED RIDE DETAILS Error', error);
             reject(error);
         });
     });

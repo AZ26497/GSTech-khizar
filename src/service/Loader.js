@@ -3,7 +3,7 @@ import {View, ActivityIndicator,Dimensions} from 'react-native';
 const { height, width } = Dimensions.get('window');
 export default class Loader extends Component {
   render() {
-    return (
+    return (            
       <View
         style={{
           // flex: 1,

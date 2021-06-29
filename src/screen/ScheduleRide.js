@@ -1,18 +1,42 @@
-import React, { Component, useState } from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, useEffect, KeyboardAvoidingView,Platform, ScrollView , SafeAreaView} from 'react-native';
+import React, { Component, useState, useEffect } from 'react';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, KeyboardAvoidingView,Platform, ScrollView , SafeAreaView} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import GradientButton from '../common/GradientButton'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import { getScheduleRideDetails } from '../service/Api'
 
 
-const ScheduleRide = ({ navigation }) => {
+const ScheduleRide = ({ navigation, route }) => {
   const [selectedStartDate, setselectedStartDate] = useState(null)
   const [selectedEndDate, setselectedEndDate] = useState(null)
   const [date, setDate] = useState(new Date(1598051730000));
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
+  const [pickUpLocation, setPickUpLocation] = useState('');
+  const [dropOffLocation, setDropOffLocation] = useState('');
+
+  useEffect(() => {
+
+
+    getRideDetails(route.params.itemID)
+  }, []);
+
+
+  const getRideDetails = (ID) => {
+    getScheduleRideDetails(ID).then((response) => {
+      if (response.status === 1) {
+          console.log('response', response.data)
+          setPickUpLocation(response.data.location)
+      }
+      else {
+          console.log('response error', response.status)
+      }
+  }).catch((error) => {
+      console.log('error', error)
+  })
+  };
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -58,7 +82,7 @@ const ScheduleRide = ({ navigation }) => {
           </View>
           <View style={{ flexDirection: 'column', width: '85%' }}>
             <GooglePlacesAutocomplete
-              placeholder='Current Location'
+              placeholder={pickUpLocation}
               fetchDetails={true}
               onPress={(data, details = null) => {
                 // 'details' is provided when fetchDetails = true
@@ -69,7 +93,7 @@ const ScheduleRide = ({ navigation }) => {
                 language: 'en',
               }}
               currentLocation={true}
-              currentLocationLabel='Islamabad'
+              currentLocationLabel={pickUpLocation}
             />
             <View style={{ height: 1, width: '95%', backgroundColor: 'gray', marginRight: 5, marginLeft: 5 }}></View>
             <GooglePlacesAutocomplete
@@ -83,6 +107,7 @@ const ScheduleRide = ({ navigation }) => {
                 key: 'AIzaSyAG8XBFKHqkH3iKweO_y3iC6kYvcwdsKxY',
                 language: 'en',
               }}
+              
             />
           </View>
 

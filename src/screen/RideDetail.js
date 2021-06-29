@@ -61,15 +61,15 @@ const {coordinates, setCoordinates} = useState([
           }}
           style={StyleSheet.absoluteFill}
         >
-          {coordinates.map((coordinate, index) =>
+          {/* {coordinates.map((coordinate, index) =>
             <MapView.Marker         ref={marker => { this.marker = marker }}
             key={`coordinate_${index}`} coordinate={coordinate} />
-          )}
+          )} */}
            {/* <Marker.Animated
         ref={marker => { this.marker = marker }}
         coordinate={this.state.initialRegion}
       /> */}
-          {(coordinates.length >= 2) && (
+          {/* {(coordinates.length >= 2) && (
             <MapViewDirections
               origin={coordinates[0]}
               destination={coordinates[coordinates.length - 1]}
@@ -81,7 +81,7 @@ const {coordinates, setCoordinates} = useState([
             //   console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
             // }}
             />
-          )}
+          )} */}
         </MapView>
         <RideSummaryAndDetail navigation={navigation}/>
 

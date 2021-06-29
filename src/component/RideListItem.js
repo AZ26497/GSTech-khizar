@@ -2,7 +2,8 @@ import React,{Component} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
-const RideListItem=()=>{
+export default class RideListItem extends Component{
+  render(){
   return (
     <View style={styles.container}>
         <TouchableOpacity activeOpacity={0.6} style={{ borderRadius:10,width:'100%',height:'100%', alignItems:'center', justifyContent:'center'}}>
@@ -24,6 +25,7 @@ const RideListItem=()=>{
       </TouchableOpacity>
     </View>
   )
+      }
 }
 
 const styles = StyleSheet.create({
@@ -42,4 +44,3 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RideListItem;

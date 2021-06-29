@@ -13,26 +13,26 @@ const ResetPassword = ({ navigation }) => {
     const [confPassword, setConfPassword] = useState('');
 
     showHidePassword = () => {
-        console.log('Called on Icon Tap', this.props.getPhoneNumber())
+        console.log('Called on Icon Tap',)
         // setShowPassword(!showPassword)
-        // const data = {
-        //     phone: '+923350520050',
-        //     password: '12345'
-        // }
-        // console.log('API Data', data)
+        const data = {
+            phone: '+923350520050',
+            password: '12345'
+        }
+        console.log('API Data', data)
 
-        // resetPasswordCall(data).then((response) => {
-        //     if (response.status === 1) {
-        //         console.log('response', response.data)
-        //         navigation.navigate('SignIn', { screenName: 'reset' })
-        //     }
-        //     else {
-        //         console.log('response error', response.status)
-        //     }
-        // }).catch((error) => {
+        resetPasswordCall(data).then((response) => {
+            if (response.status === 1) {
+                console.log('response', response.data)
+                navigation.navigate('SignIn', { screenName: 'reset' })
+            }
+            else {
+                console.log('response error', response.status)
+            }
+        }).catch((error) => {
 
-        //     console.log('error', error)
-        // })
+            console.log('error', error)
+        })
 
     }
 
