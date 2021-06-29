@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component,useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Image, StatusBar, TouchableOpacity, SafeAreaView } from 'react-native';
 import GradientButton from '../common/GradientButton'
 import LinearGradient from 'react-native-linear-gradient';
@@ -6,15 +6,18 @@ import { connect } from 'react-redux'
 import {sendOTPCall} from '../service/Api'
 import { forgetError, forgetResponse, forgetRequest } from '../redux/actions/forgetActions'
 const ForgetPassword = ({navigation}) => {
-
+    const [phoneNumErrorMsg, setPhoneNumErrorMsg] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [phoneRegix, setPhoneRegix] = useState('');
     sendOTPServiceCall=()=>{
         //   if(phoneNumber == ''){
 // return
         //   }else
         //   {
-            
+            if(phoneNumber){
+            let countryCode="+92"+phoneNumber
              const data={
-                 phone:'+923350520050'
+                 phone:countryCode
              }
               sendOTPCall(data).then((response) => {
                 if (response.status === 1) {
@@ -27,8 +30,24 @@ const ForgetPassword = ({navigation}) => {
             }).catch((error) => {
                 console.log('error', error)
             })
+        }
+        else{
+            alert("Please Enter Phone Number")
+        }
         //   }
       }
+      mobileNumberValidate = text => {
+        const reg =
+          /^[0-9]{10}$/; ////^0|08[0-9]{9,}$/;///^[0]?[789]\d{9}$/;
+        setPhoneRegix(reg);
+        if (reg.test(text) === false) {
+          setPhoneNumErrorMsg('Invalid phone number');
+          setPhoneNumber(text);
+        } else {
+          setPhoneNumErrorMsg('');
+          setPhoneNumber(text);
+        }
+      };
 
     return (
         <SafeAreaView  style={{
@@ -47,14 +66,37 @@ const ForgetPassword = ({navigation}) => {
             <Text style={{ color: 'white', fontSize: 15, width: '90%', textAlign: 'center' }}>You will receive a code to create a new password via sms.</Text>
 
             <View style={styles.container}>
-                <View style={styles.textFieldCont}>
-                    <Text style={{ marginBottom: 5, fontWeight: 'bold', color: 'white', fontSize: 20 }}>Phone Number</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={''}
-                        keyboardType="numeric"
-                    />
-                </View>
+            <View style={styles.textFieldCont}>
+            <Text
+              style={{
+                marginBottom: 5,
+                fontWeight: 'bold',
+                color: 'white',
+                fontSize: 20,
+              }}>
+              Phone Number
+            </Text>
+            <View style={styles.input}>
+              <Text>+92</Text>
+              <TextInput
+                style={{
+                  paddingRight: 8,
+
+                  paddingLeft: 3,
+                  width: '70%',
+                }}
+                value={phoneNumber}
+                keyboardType="numeric"
+                onChangeText={text => mobileNumberValidate(text)}
+              />
+            </View>
+
+            {phoneNumErrorMsg != '' && (
+              <Text style={{color: 'red', fontSize: 16, textAlign: 'right'}}>
+                {phoneNumErrorMsg}
+              </Text>
+            )}
+          </View>
                 <GradientButton height={60} title={'Send'} width={'90%'} action={()=>sendOTPServiceCall()}/>
 
             </View>
@@ -88,10 +130,10 @@ const styles = StyleSheet.create({
         bottom: 0, //Here is the trick
     },
     textFieldCont: {
-        alignItems: 'flex-start',
         justifyContent: 'space-between',
         flexDirection: 'column',
-        width: '90%'
+        width: '90%',
+        margin: 10,
     },
     inputStyle: {
         flex: 1,
@@ -112,6 +154,17 @@ const styles = StyleSheet.create({
         backgroundColor: '#38ef7d',
         borderRadius: 10,
     },
+    input: {
+        paddingTop: 10,
+        paddingRight: 10,
+        paddingBottom: 10,
+        paddingLeft: 10,
+        backgroundColor: '#fff',
+        color: '#424242',
+        width: '100%',
+        borderRadius: 15,
+        flexDirection: 'row',
+      },
 });
 const mapStateToProps = state => {
     const { forgetReducer } = state
