@@ -1,17 +1,30 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Image, SafeAreaView } from 'react-native';
-import GradientButton from '../common/GradientButton'
-import LinearGradient from 'react-native-linear-gradient'
-import Icon from 'react-native-vector-icons/Ionicons'
-import { connect } from 'react-redux'
-import { resetResponse, resetRequets, resetError } from '../redux/actions/resetPassActions'
-import { resetPasswordCall } from '../service/Api'
+import React, {useState} from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Image,
+  SafeAreaView,
+} from 'react-native';
+import GradientButton from '../common/GradientButton';
+import LinearGradient from 'react-native-linear-gradient';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {connect} from 'react-redux';
+import {
+  resetResponse,
+  resetRequets,
+  resetError,
+} from '../redux/actions/resetPassActions';
+import {resetPasswordCall} from '../service/Api';
 
-const ResetPassword = ({ navigation }) => {
-    const [showPassword, setShowPassword] = useState(true)
-    const [password, setPassword] = useState('')
-    const [confPassword, setConfPassword] = useState('');
+const ResetPassword = ({navigation}) => {
+  const [showPassword, setShowPassword] = useState(true);
+  const [showConfirmPassword, setshowConfirmPassword] = useState(true);
+  const [password, setPassword] = useState('');
+  const [confPassword, setConfPassword] = useState('');
 
+<<<<<<< HEAD
     showHidePassword = () => {
         console.log('Called on Icon Tap',)
         // setShowPassword(!showPassword)
@@ -39,116 +52,186 @@ const ResetPassword = ({ navigation }) => {
     return (
         <SafeAreaView style={{
             flex: 1, backgroundColor: '#38ef7d'
+=======
+  showHidePassword = () => {
+    // console.log('Called on Icon Tap', this.props.getPhoneNumber())
+    setShowPassword(!showPassword);
+    
+  };
+  showHideConfirmPassword = () => {
+    // console.log('Called on Icon Tap', this.props.getPhoneNumber())
+    setshowConfirmPassword(!showConfirmPassword);
+    
+  };
+  function ValidatePassword(){
+    if (password) {
+        if (confPassword) {
+          if (password === confPassword) {
+            const data = {
+                phone: '+923350520050',
+                password: password
+            }
+            console.log('API Data', data)
+            resetPasswordCall(data).then((response) => {
+                if (response.status === 1) {
+                    console.log('response', response.data)
+                    navigation.navigate('SignIn', { screenName: 'reset' })
+                }
+                else {
+                    console.log('response error', response.status)
+                }
+            }).catch((error) => {
+                console.log('error', error)
+            })
+          } else {
+            alert('Password Should Be Same');
+          }
+        } else {
+          alert('Enter Confirm Password');
+        }
+      } else {
+        alert('Enter Password');
+      }
+  }
+
+  return (
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: '#38ef7d',
+      }}>
+      <LinearGradient
+        colors={['#38ef7d', '#11998e']}
+        style={{
+          flex: 1,
+          alignItems: 'center',
+>>>>>>> 0b68c10b726d3337dcc07ba66b5fc810aa7abf70
         }}>
-            <LinearGradient
-                colors={['#38ef7d', '#11998e']}
-                style={{
-                    flex: 1,
-                    alignItems: 'center'
-                }}
-            >
-                <Image source={require('../../assets/images/forgetPassword.png')} style={{ height: 200, width: '80%', marginTop: 100 }} />
+        <Image
+          source={require('../../assets/images/forgetPassword.png')}
+          style={{height: 200, width: '80%', marginTop: 100}}
+        />
 
-                <View style={{ alignSelf: 'center', marginTop: 30, marginBottom: 20 }}>
-                    <View style={styles.textFieldCont}>
-                        <Text style={{ marginBottom: 5, fontWeight: 'bold', color: 'white', fontSize: 20 }}>New Password</Text>
-                        <View style={styles.passwordContainer}>
-                            <TextInput
-                                style={[styles.input, { width: '90%' }]}
-                                value={password}
-                                keyboardType="numeric"
-                                secureTextEntry={showPassword}
-                                onChangeText={(text) => setPassword(text)}
-                            />
-                            <Icon
-                                name={showPassword == true ? 'eye-off-outline' : 'eye-outline'}
-                                color='#000'
-                                size={20}
-                                style={{ marginRight: 5 }}
-                                // onPress={() => this.showHidePassword()}
-                            />
-                        </View>
-                    </View>
+        <View style={{alignSelf: 'center', marginTop: 30, marginBottom: 20}}>
+          <View style={styles.textFieldCont}>
+            <Text
+              style={{
+                marginBottom: 5,
+                fontWeight: 'bold',
+                color: 'white',
+                fontSize: 20,
+              }}>
+              New Password
+            </Text>
+            <View style={styles.passwordContainer}>
+              <TextInput
+                style={[styles.input, {width: '90%'}]}
+                value={password}
+                secureTextEntry={showPassword}
+                onChangeText={text => setPassword(text)}
+              />
+              <Icon
+                name={showPassword == true ? 'eye-off-outline' : 'eye-outline'}
+                color="#000"
+                size={20}
+                style={{marginRight: 5}}
+                onPress={() => this.showHidePassword()}
+              />
+            </View>
+          </View>
 
-                    <View style={styles.textFieldCont}>
-                        <Text style={{ marginBottom: 5, fontWeight: 'bold', color: 'white', fontSize: 20 }}>Confirm Password</Text>
-                        <View style={styles.passwordContainer}>
-                            <TextInput
-                                style={[styles.input, { width: '90%' }]}
-                                value={confPassword}
-                                keyboardType="numeric"
-                                secureTextEntry={showPassword}
-                                onChangeText={(text) => setConfPassword(text)}
-                            />
-                            <Icon
-                                name={showPassword == true ? 'eye-off-outline' : 'eye-outline'}
-                                color='#000'
-                                size={20}
-                                style={{ marginRight: 5 }}
-                                // onPress={() => this.showHidePassword()}
-                            />
-                        </View>
-                    </View>
-
-                </View>
-                <GradientButton title={"Ok"} width={'90%'} height={60} action={() => showHidePassword()}></GradientButton>
-
-            </LinearGradient>
-        </SafeAreaView>
-    )
-}
+          <View style={styles.textFieldCont}>
+            <Text
+              style={{
+                marginBottom: 5,
+                fontWeight: 'bold',
+                color: 'white',
+                fontSize: 20,
+              }}>
+              Confirm Password
+            </Text>
+            <View style={styles.passwordContainer}>
+              <TextInput
+                style={[styles.input, {width: '90%'}]}
+                value={confPassword}
+                keyboardType="numeric"
+                secureTextEntry={showConfirmPassword}
+                onChangeText={text => setConfPassword(text)}
+              />
+              <Icon
+                name={showConfirmPassword == true ? 'eye-off-outline' : 'eye-outline'}
+                color="#000"
+                size={20}
+                style={{marginRight: 5}}
+                 onPress={() => this.showHideConfirmPassword()}
+              />
+            </View>
+          </View>
+        </View>
+        <GradientButton
+          title={'Reset'}
+          width={'90%'}
+          height={60}
+          action={() => ValidatePassword()}></GradientButton>
+      </LinearGradient>
+    </SafeAreaView>
+  );
+};
 
 const styles = StyleSheet.create({
-    container: {
-        height: 310,
-        width: '90%',
-        // alignItems: 'center',
-        justifyContent: 'space-around',
-        alignSelf: 'center',
-        backgroundColor: 'yellow'
-    },
+  container: {
+    height: 310,
+    width: '90%',
+    // alignItems: 'center',
+    justifyContent: 'space-around',
+    alignSelf: 'center',
+    backgroundColor: 'yellow',
+  },
 
-    textFieldCont: {
-        // alignItems: 'flex-start',
-        justifyContent: 'space-between',
-        flexDirection: 'column',
-        width: '90%',
-        margin: 10
-    },
-    passwordContainer: {
-        flexDirection: 'row',
-        borderColor: '#000',
-        backgroundColor: 'white',
-        borderRadius: 15,
-        width: '100%',
-        alignItems: 'center',
-        justifyContent: 'space-around'
-    },
-    inputStyle: {
-        flex: 1,
-    },
-    input: {
-        paddingTop: 10,
-        paddingRight: 10,
-        paddingBottom: 10,
-        paddingLeft: 10,
-        backgroundColor: '#fff',
-        color: '#424242',
-        width: '100%',
-        borderRadius: 15,
-    },
-    button: {
-        backgroundColor: '#38ef7d',
-        borderRadius: 10,
-    },
+  textFieldCont: {
+    // alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    flexDirection: 'column',
+    width: '90%',
+    margin: 10,
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    borderColor: '#000',
+    backgroundColor: 'white',
+    borderRadius: 15,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+  inputStyle: {
+    flex: 1,
+  },
+  input: {
+    paddingTop: 10,
+    paddingRight: 10,
+    paddingBottom: 10,
+    paddingLeft: 10,
+    backgroundColor: '#fff',
+    color: '#424242',
+    width: '100%',
+    borderRadius: 15,
+  },
+  button: {
+    backgroundColor: '#38ef7d',
+    borderRadius: 10,
+  },
 });
 
 const mapStateToProps = state => {
-    const { forgetReducer, resetPassReducer } = state
-    const { tokenForReset, phone } = forgetReducer
-    const { loading } = resetPassReducer
-    return { tokenForReset, loading, phone }
-}
+  const {forgetReducer, resetPassReducer} = state;
+  const {tokenForReset, phone} = forgetReducer;
+  const {loading} = resetPassReducer;
+  return {tokenForReset, loading, phone};
+};
 
-
-export default connect(mapStateToProps,{ resetResponse, resetRequets, resetError })(ResetPassword)
+export default connect(mapStateToProps, {
+  resetResponse,
+  resetRequets,
+  resetError,
+})(ResetPassword);

@@ -43,21 +43,91 @@ const PersonalRide = ({ navigation }) => {
   const { coordinates, setCoordinates } = useState([])
 
   useEffect(async () => {
-    console.log('Coordinate', coordinates)
+  //   console.log('Coordinate', coordinates)
 
-    await requestLocationPermission().then(() => {
-      Geolocation.getCurrentPosition((position) => {
+  //   await requestLocationPermission().then(() => {
+  //     Geolocation.getCurrentPosition((position) => {
         
-        setMyLatitude(Number(position.coords.latitude))
-        setMyLongitude(Number(position.coords.longitude))
+  //       setMyLatitude(Number(position.coords.latitude))
+  //       setMyLongitude(Number(position.coords.longitude))
        
-      },
+  //     },
       
-        (error) => alert(JSON.stringify(error.message)),
-        { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 });
-   })
+  //       (error) => alert(JSON.stringify(error.message)),
+  //       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 });
+  //  })
+  if (Platform.OS === 'android') {
+    console.log('serviceSelected', serviceSelected)
+    setTimeout(() => {
+        requestLocationPermission();
+    }, 1000);
+}
+else{
+    getOneTimeLocation();  
+}
  
   }, [])
+  const getOneTimeLocation = () => {
+    console.log('Getting Location ... ')
+    Geolocation.getCurrentPosition(
+        //Will give you the current location
+        (position) => {
+          setMyLatitude(Number(position.coords.latitude))
+          setMyLongitude(Number(position.coords.longitude))
+        },
+        (error) => {
+            console.log('error ', error)
+        },
+        {
+            enableHighAccuracy: false,
+            timeout: 30000,
+            maximumAge: 1000
+        },
+    );
+};
+  const requestLocationPermission = async () => {
+    RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({
+        interval: 50000,
+        // fastInterval: 5000,
+    })
+        .then((data) => {
+        })
+        .catch((err) => {
+        });
+    if (Platform.OS === 'ios') {
+        getOneTimeLocation();
+    } else {
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                getOneTimeLocation();
+            } else {
+                Alert.alert(
+                    "Warning",
+                    "you can't proceed next without allowing location permission click ok to allow permission",
+                    [
+                        {
+                            text: "Cancel", onPress: () => {
+                                navigation.goBack()
+                            }
+                        },
+                        {
+                            text: "OK", onPress: () => {
+                                navigation.goBack()
+                                openAppSettings()
+                            }
+                        }
+
+                    ]
+                );
+                console.log('permission Denied')
+            }
+        } catch (err) {
+            console.warn(err);
+        }
+    }
+};
 
 
   return (
