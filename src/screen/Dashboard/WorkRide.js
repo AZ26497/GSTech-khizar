@@ -60,28 +60,29 @@ const WorkRide = ({ navigation }) => {
     <SafeAreaView style={{
       flex: 1, backgroundColor: '#38ef7d'
     }}>
-        {loading &&
-        <Loader />
+      
+      {loading?<Loader/>:(
+         <LinearGradient
+         // Background Linear Gradient
+         colors={['#38ef7d', '#11998e']}
+         style={{ flex: 1 }}
+       >
+          
+         <View style={styles.container}>
+           <View style={{ flex: 1, marginLeft: 10, marginRight: 10, marginTop: (Platform.OS === 'ios' ? 50 : 60), marginBottom: 20, alignItems: 'center', justifyContent: 'center' }}>
+             {rideList.length == 0 ? <Text style={{ fontSize: 20, color: 'white'}}>Currently No Scheduled Rides</Text> :
+               <FlatList
+                 data={rideList}
+                 renderItem={renderItem}
+                 keyExtractor={item => item.id}
+               />
+             }
+           </View>
+         </View>
+       </LinearGradient>
+      )
       }
-
-      <LinearGradient
-        // Background Linear Gradient
-        colors={['#38ef7d', '#11998e']}
-        style={{ flex: 1 }}
-      >
-        
-        <View style={styles.container}>
-          <View style={{ flex: 1, marginLeft: 10, marginRight: 10, marginTop: (Platform.OS === 'ios' ? 50 : 60), marginBottom: 20, alignItems: 'center', justifyContent: 'center' }}>
-            {rideList.length == 0 ? <Text style={{ fontSize: 20, color: 'white'}}>Currently No Scheduled Rides</Text> :
-              <FlatList
-                data={rideList}
-                renderItem={renderItem}
-                keyExtractor={item => item.id}
-              />
-            }
-          </View>
-        </View>
-      </LinearGradient>
+     
     </SafeAreaView>
   )
 }
