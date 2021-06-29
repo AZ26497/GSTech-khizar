@@ -24,35 +24,6 @@ const ResetPassword = ({navigation}) => {
   const [password, setPassword] = useState('');
   const [confPassword, setConfPassword] = useState('');
 
-<<<<<<< HEAD
-    showHidePassword = () => {
-        console.log('Called on Icon Tap',)
-        // setShowPassword(!showPassword)
-        const data = {
-            phone: '+923350520050',
-            password: '12345'
-        }
-        console.log('API Data', data)
-
-        resetPasswordCall(data).then((response) => {
-            if (response.status === 1) {
-                console.log('response', response.data)
-                navigation.navigate('SignIn', { screenName: 'reset' })
-            }
-            else {
-                console.log('response error', response.status)
-            }
-        }).catch((error) => {
-
-            console.log('error', error)
-        })
-
-    }
-
-    return (
-        <SafeAreaView style={{
-            flex: 1, backgroundColor: '#38ef7d'
-=======
   showHidePassword = () => {
     // console.log('Called on Icon Tap', this.props.getPhoneNumber())
     setShowPassword(!showPassword);
@@ -105,7 +76,6 @@ const ResetPassword = ({navigation}) => {
         style={{
           flex: 1,
           alignItems: 'center',
->>>>>>> 0b68c10b726d3337dcc07ba66b5fc810aa7abf70
         }}>
         <Image
           source={require('../../assets/images/forgetPassword.png')}

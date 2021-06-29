@@ -1,17 +1,20 @@
 import React, { Component, useState, useEffect } from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, KeyboardAvoidingView,Platform, ScrollView , SafeAreaView} from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, SafeAreaView } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import GradientButton from '../common/GradientButton'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { getScheduleRideDetails } from '../service/Api'
-
+import { getTime, getDate } from '../common/Index'
 
 const ScheduleRide = ({ navigation, route }) => {
+
+  
   const [selectedStartDate, setselectedStartDate] = useState(null)
   const [selectedEndDate, setselectedEndDate] = useState(null)
-  const [date, setDate] = useState(new Date(1598051730000));
+  const [date, setRideDate] = useState(new Date());
+  const [time, setRideTime] = useState('');
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [pickUpLocation, setPickUpLocation] = useState('');
@@ -27,15 +30,21 @@ const ScheduleRide = ({ navigation, route }) => {
   const getRideDetails = (ID) => {
     getScheduleRideDetails(ID).then((response) => {
       if (response.status === 1) {
-          console.log('response', response.data)
-          setPickUpLocation(response.data.location)
+        console.log('response', response.data)
+        setPickUpLocation(response.data.location)
+        const rideDate = getDate(response.data.pickDateTime)
+         const rideTime = getTime(response.data.pickDateTime)
+        console.log('Ride Date', rideDate)
+        setRideDate(new Date(rideDate))
+        setRideTime(rideTime)
+
       }
       else {
-          console.log('response error', response.status)
+        console.log('response error', response.status)
       }
-  }).catch((error) => {
+    }).catch((error) => {
       console.log('error', error)
-  })
+    })
   };
 
   const onChange = (event, selectedDate) => {
@@ -58,17 +67,17 @@ const ScheduleRide = ({ navigation, route }) => {
   };
 
   return (
-    <SafeAreaView  style={{
-      flex: 1, backgroundColor:'#38ef7d'
-  }}>
-    <LinearGradient
-      // Background Linear Gradient
-      colors={['#38ef7d', '#11998e']}
-      style={{
-        flex: 1, alignItems: 'center', justifyContent:'center'
-      }}
-    >
-     
+    <SafeAreaView style={{
+      flex: 1, backgroundColor: '#38ef7d'
+    }}>
+      <LinearGradient
+        // Background Linear Gradient
+        colors={['#38ef7d', '#11998e']}
+        style={{
+          flex: 1, alignItems: 'center', justifyContent: 'center'
+        }}
+      >
+
         <View style={{
           flexDirection: 'row',
           justifyContent: 'space-around',
@@ -107,24 +116,24 @@ const ScheduleRide = ({ navigation, route }) => {
                 key: 'AIzaSyAG8XBFKHqkH3iKweO_y3iC6kYvcwdsKxY',
                 language: 'en',
               }}
-              
+
             />
           </View>
 
         </View>
-        
-      <View style={{ flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', position: 'absolute', bottom: 10, width: '100%',  padding:10 }}>
-          <TouchableOpacity style={{ width: '100%', borderRadius: 15, justifyContent: 'center', marginBottom:20, padding:10,elevation: 10,backgroundColor:'#ffff' }} onPress={showDatepicker}>
+
+        <View style={{ flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', position: 'absolute', bottom: 10, width: '100%', padding: 10 }}>
+          <TouchableOpacity style={{ width: '100%', borderRadius: 15, justifyContent: 'center', marginBottom: 20, padding: 10, elevation: 10, backgroundColor: '#ffff' }} onPress={showDatepicker}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Ionicons name={'calendar-outline'} size={40} color={'black'} />
-              <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' , marginLeft:10}}>{new Date().getDate() +'/'+ new Date().getMonth() +'/'+ new Date().getFullYear()}</Text>
+              <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center', marginLeft: 10 }}>{new Date().getDate() + '/' + new Date().getMonth() + '/' + new Date().getFullYear()}</Text>
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={{ width: '100%',borderRadius: 15, justifyContent: 'center',borderRadius: 15, padding:10,elevation: 10, backgroundColor:'#ffff'}} onPress={showTimepicker}>
+          <TouchableOpacity style={{ width: '100%', borderRadius: 15, justifyContent: 'center', borderRadius: 15, padding: 10, elevation: 10, backgroundColor: '#ffff' }} onPress={showTimepicker}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Ionicons name={'time-outline'} size={40} color={'black'} />
-              <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' , marginLeft:10}}>{new Date().getHours() + ':' + new Date().getMinutes() + ':' + new Date().getSeconds()}</Text>
+              <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center', marginLeft: 10 }}>{new Date().getHours() + ':' + new Date().getMinutes() + ':' + new Date().getSeconds()}</Text>
             </View>
           </TouchableOpacity>
           {show && (
@@ -138,8 +147,8 @@ const ScheduleRide = ({ navigation, route }) => {
             />
           )}
         </View>
-    </LinearGradient>
-</SafeAreaView>
+      </LinearGradient>
+    </SafeAreaView>
   )
 }
 
@@ -154,7 +163,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     // borderColor: '#38ef7d',
     // borderWidth: 2,
-    alignItems:'center'
+    alignItems: 'center'
 
   },
 });

@@ -1,6 +1,6 @@
 import axios from "axios";
 import AsyncStorage from '@react-native-community/async-storage'
-
+import {getToken} from '../common/Index'
 
 const BASE_URL = 'http://162.0.236.163:8000/auth/' //service URL
 
@@ -94,12 +94,6 @@ export const resetPasswordCall = (data) => {
     });
 }
 
-
-const getToken=async()=> {
-        const token = await AsyncStorage.getItem('token')
-        console.log('Token:', token)
-        return token;
-}
 export const getScheduledRideList = async () => {
     console.log('Get List')
     const AUTH_TOKEN = await getToken()

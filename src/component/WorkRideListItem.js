@@ -4,6 +4,8 @@ import Feather from 'react-native-vector-icons/Feather'
 import Icon from 'react-native-vector-icons/Ionicons'
 import Moment from 'moment'
 
+import {getTime , getDate} from '../common/Index'
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -15,22 +17,6 @@ export default class WorkRideListItem extends Component {
             else { phoneNumber = `telprompt:${number}`; }
             Linking.openURL(phoneNumber);
         };
-
-        const getDate = (dataStr) => {
-            Moment.locale('en')
-            const dateTimeArr = dataStr.split('T')
-            var newDate = Moment(dateTimeArr[0]).format('LL');
-            console.log('New Date Format', newDate)
-            return newDate
-        }
-
-        const getTime = (dataStr) => {
-            const dateTimeArr = dataStr.split('T')
-            const timeArray = dateTimeArr[1].split('.')
-            console.log('New Time', timeArray[0])
-
-            return timeArray[0]
-        }
 
         const deleteItemAtIndex = () => {
             Alert.alert(

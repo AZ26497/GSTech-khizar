@@ -122,14 +122,8 @@ const SignIn = ({navigation, route}) => {
               Phone Number
             </Text>
             <View style={styles.input}>
-              <Text>+92</Text>
+              <Text style={{backgroundColor:'red', width:'10%'}}>+92</Text>
               <TextInput
-                style={{
-                  paddingRight: 8,
-
-                  paddingLeft: 3,
-                  width: '70%',
-                }}
                 value={phoneNumber}
                 keyboardType="numeric"
                 onChangeText={text => mobileNumberValidate(text)}

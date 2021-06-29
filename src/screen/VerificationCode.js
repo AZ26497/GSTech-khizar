@@ -6,7 +6,7 @@ import { verifyOTPCall, verifyResendOTP } from '../service/Api'
 import Loader from '../service/Loader'
 import GradientButton from '../common/GradientButton'
 import AsyncStorage from '@react-native-community/async-storage'
-
+import {saveToken} from '../common/Index'
 const VerificationCode = ({ navigation, route }) => {
     const [disableResendBtn, setResendBtnDisable] = useState(true)
     const [timerCount, setTimer] = useState(60);
@@ -32,10 +32,7 @@ const VerificationCode = ({ navigation, route }) => {
             clearInterval(interval)
         }
     };
-    const saveToken=async(token)=>{
-        console.log('Ssave Token Called', token)
-         await AsyncStorage.setItem('token', JSON.stringify(token))
-        }
+    
     const verifyOTPCode = (code, type) => {
         setLoading(true)
         console.log('Code type', type)
