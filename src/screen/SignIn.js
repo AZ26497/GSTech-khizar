@@ -33,7 +33,7 @@ const SignIn = ({navigation, route}) => {
 
   showHidePassword = () => {
     console.log('Called on Icon Tap');
-    setShowPassword({showPassword: !showPassword});
+    setShowPassword(!showPassword);
   };
 
   function mobileNumberValidate(text){
