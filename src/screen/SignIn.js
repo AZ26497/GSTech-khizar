@@ -15,6 +15,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {requestLogin} from '../service/Api';
 import {connect} from 'react-redux';
 import Loader from '../service/Loader';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
 import {
   signInRequets,
   signInResponse,
@@ -36,10 +37,8 @@ const SignIn = ({navigation, route}) => {
     setShowPassword(!showPassword);
   };
 
-  function mobileNumberValidate(text){
-   
-    const reg =
-      /^[0-9]{10}$/; ////^0|08[0-9]{9,}$/;///^[0]?[789]\d{9}$/;
+  function mobileNumberValidate(text) {
+    const reg = /^[0-9]{10}$/; ////^0|08[0-9]{9,}$/;///^[0]?[789]\d{9}$/;
     setPhoneRegix(reg);
     if (reg.test(text) === false) {
       setPhoneNumErrorMsg('Invalid phone number');
@@ -48,14 +47,14 @@ const SignIn = ({navigation, route}) => {
       setPhoneNumErrorMsg('');
       setPhoneNumber(text);
     }
-  };
+  }
 
   loginApiCall = () => {
     if (screenName == 'reset') {
       navigation.navigate('Home');
     } else {
       setLoading(true);
-      let countryCode="+92"+phoneNumber
+      let countryCode = '+92' + phoneNumber;
       const data = {
         phone: countryCode,
         password: password,
@@ -86,102 +85,119 @@ const SignIn = ({navigation, route}) => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: '#38ef7d',
+        backgroundColor:'#38ef7d'
+        
       }}>
       <LinearGradient
         colors={['#38ef7d', '#11998e']}
         style={{
-          flex: 1,
+          height: '100%',
           alignItems: 'center',
         }}>
-        <Text
-          style={{
-            marginTop: StatusBar.currentHeight || 40,
-            fontWeight: 'bold',
-            color: 'white',
-            fontSize: 25,
-            alignSelf: 'center',
-          }}>
-          Sign In
-        </Text>
+        <KeyboardAwareScrollView
+          showsVerticalScrollIndicator={false}
+          style={{width: '100%', height: '100%',}}
+          contentContainerStyle={{alignItems:'center'}}
+        
+          >
+            
+          <Text
+            style={{
+              marginTop: StatusBar.currentHeight || 40,
+              fontWeight: 'bold',
+              color: 'white',
+              fontSize: 25,
+              alignSelf: 'center',
+            }}>
+            Sign In
+          </Text>
 
-        <Image
-          source={require('../../assets/images/signIn.png')}
-          style={{height: 200, width: '80%', marginTop: 20}}
-        />
+          <Image
+            source={require('../../assets/images/signIn.png')}
+            style={{height: 200, width: '80%', marginTop: 20}}
+          />
 
-        <View style={styles.container}>
-          <View style={styles.textFieldCont}>
-            <Text
-              style={{
-                marginBottom: 5,
-                fontWeight: 'bold',
-                color: 'white',
-                fontSize: 20,
-              }}>
-              Phone Number
-            </Text>
-            <View style={styles.input}>
-              <Text style={{backgroundColor:'red', width:'10%'}}>+92</Text>
-              <TextInput
-                value={phoneNumber}
-                keyboardType="numeric"
-                onChangeText={text => mobileNumberValidate(text)}
-              />
-            </View>
-
-            {phoneNumErrorMsg != '' && (
-              <Text style={{color: 'red', fontSize: 16, textAlign: 'right'}}>
-                {phoneNumErrorMsg}
+          <View style={styles.container}>
+            <View style={styles.textFieldCont}>
+              <Text
+                style={{
+                  marginBottom: 5,
+                  fontWeight: 'bold',
+                  color: 'white',
+                  fontSize: 20,
+                }}>
+                Phone Number
               </Text>
+              <View style={styles.input}>
+                <Text>+92</Text>
+                <TextInput
+                  style={{
+                    paddingRight: 8,
+
+                    paddingLeft: 3,
+                    width: '70%',
+                  }}
+                  value={phoneNumber}
+                  keyboardType="numeric"
+                  onChangeText={text => mobileNumberValidate(text)}
+                />
+              </View>
+
+              {phoneNumErrorMsg != '' && (
+                <Text style={{color: 'red', fontSize: 16, textAlign: 'right'}}>
+                  {phoneNumErrorMsg}
+                </Text>
+              )}
+            </View>
+            <View style={styles.textFieldCont}>
+              <Text
+                style={{
+                  marginBottom: 5,
+                  fontWeight: 'bold',
+                  color: 'white',
+                  fontSize: 20,
+                }}>
+                Password
+              </Text>
+              <View style={styles.passwordContainer}>
+                <TextInput
+                  style={[styles.input, {width: '90%'}]}
+                  value={password}
+                  keyboardType="numeric"
+                  secureTextEntry={showPassword}
+                  onChangeText={text => setPassword(text)}
+                />
+                <Icon
+                  name={
+                    showPassword == true ? 'eye-off-outline' : 'eye-outline'
+                  }
+                  color="#000"
+                  size={20}
+                  style={{marginRight: 15}}
+                  onPress={() => this.showHidePassword()}
+                />
+              </View>
+              <TouchableOpacity
+                style={{alignSelf: 'flex-end', marginTop: 10}}
+                onPress={() => navigation.navigate('ForgetPassword')}>
+                <Text style={{color: 'red', fontSize: 15, fontWeight: 'bold'}}>
+                  Forgot Password?
+                </Text>
+              </TouchableOpacity>
+            </View>
+            {loading == true ? (
+              <Loader />
+            ) : (
+              <GradientButton
+                height={60}
+                width={'90%'}
+                title={'Sign In'}
+                margin={5}
+                action={() => loginApiCall()}
+              />
             )}
           </View>
-          <View style={styles.textFieldCont}>
-            <Text
-              style={{
-                marginBottom: 5,
-                fontWeight: 'bold',
-                color: 'white',
-                fontSize: 20,
-              }}>
-              Password
-            </Text>
-            <View style={styles.passwordContainer}>
-              <TextInput
-                style={[styles.input, {width: '90%'}]}
-                value={password}
-                keyboardType="numeric"
-                secureTextEntry={showPassword}
-                onChangeText={text => setPassword(text)}
-              />
-              <Icon
-                name={showPassword == true ? 'eye-off-outline' : 'eye-outline'}
-                color="#000"
-                size={20}
-                style={{marginRight: 15}}
-                onPress={() => this.showHidePassword()}
-              />
-            </View>
-            <TouchableOpacity
-              style={{alignSelf: 'flex-end', marginTop: 10}}
-              onPress={() => navigation.navigate('ForgetPassword')}>
-              <Text style={{color: 'red', fontSize: 15, fontWeight: 'bold'}}>
-                Forgot Password?
-              </Text>
-            </TouchableOpacity>
-          </View>
-          {loading == true ? (
-            <Loader />
-          ) : (
-            <GradientButton
-              height={60}
-              width={'90%'}
-              title={'Sign In'}
-              margin={5}
-              action={() => loginApiCall()}
-            />
-          )}
-        </View>
+        </KeyboardAwareScrollView>
       </LinearGradient>
     </SafeAreaView>
   );

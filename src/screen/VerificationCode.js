@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView,ActivityIndicator } from 'react-native';
 import OTPInputView from '@twotalltotems/react-native-otp-input'
 import LinearGradient from 'react-native-linear-gradient';
 import { verifyOTPCall, verifyResendOTP } from '../service/Api'
@@ -110,7 +110,7 @@ const VerificationCode = ({ navigation, route }) => {
                             })}
                         />
                         {loading == true ?
-                            <Loader />
+                            <ActivityIndicator size="large" color="gray" />
                             :
                             <GradientButton height={60} width={'80%'} title={'Send'} margin={5} action={() => verifyOTPCode(otp, 'verify')} />
                         }

@@ -1,10 +1,12 @@
 import React, { Component,useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Image, StatusBar, TouchableOpacity, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Image, StatusBar, TouchableOpacity, SafeAreaView ,Dimensions} from 'react-native';
 import GradientButton from '../common/GradientButton'
 import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux'
 import {sendOTPCall} from '../service/Api'
 import { forgetError, forgetResponse, forgetRequest } from '../redux/actions/forgetActions'
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
+var height=Dimensions.get('window').height;
 const ForgetPassword = ({navigation}) => {
     const [phoneNumErrorMsg, setPhoneNumErrorMsg] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -60,6 +62,12 @@ const ForgetPassword = ({navigation}) => {
                 flex: 1, alignItems: 'center',
             }}
         >
+           <KeyboardAwareScrollView
+          showsVerticalScrollIndicator={false}
+          style={{width: '100%', height: '100%',}}
+          contentContainerStyle={{alignItems:'center'}}
+        
+          >
             <Image source={require('../../assets/images/forgetPassword.png')} style={{ height: 200, width: '80%', marginTop: 100 }} />
             <Text style={{ marginTop: 10, color: 'white', fontSize: 15 }}>Please enter your phone number</Text>
 
@@ -107,6 +115,7 @@ const ForgetPassword = ({navigation}) => {
                     <Text style={{ color: 'blue', fontSize: 18, textDecorationLine: 'underline' }}>Help</Text>
                 </TouchableOpacity>
             </View>
+            </KeyboardAwareScrollView>
         </LinearGradient>
 </SafeAreaView>
     )
@@ -127,7 +136,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         position: 'absolute', //Here is the trick
-        bottom: 0, //Here is the trick
+        top: height-140, //Here is the trick
     },
     textFieldCont: {
         justifyContent: 'space-between',
