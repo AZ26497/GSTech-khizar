@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, { Component, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -12,17 +12,17 @@ import {
 import GradientButton from '../common/GradientButton';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {requestLogin} from '../service/Api';
-import {connect} from 'react-redux';
+import { requestLogin } from '../service/Api';
+import { connect } from 'react-redux';
 import Loader from '../service/Loader';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
 import {
   signInRequets,
   signInResponse,
   signInError,
 } from '../redux/actions/signInActions';
 //changes
-const SignIn = ({navigation, route}) => {
+const SignIn = ({ navigation, route }) => {
   const [showPassword, setShowPassword] = useState(true);
   const [password, setPassword] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -66,7 +66,7 @@ const SignIn = ({navigation, route}) => {
           if (response.status === 1) {
             setLoading(false);
             console.log('response', response.data);
-            navigation.navigate('Verification', {screenName: 'signIn'});
+            navigation.navigate('Verification', { screenName: 'signIn' });
           } else {
             setLoading(false);
             alert('Invalid phone number and password');
@@ -85,8 +85,8 @@ const SignIn = ({navigation, route}) => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor:'#38ef7d'
-        
+        backgroundColor: '#38ef7d'
+
       }}>
       <LinearGradient
         colors={['#38ef7d', '#11998e']}
@@ -96,11 +96,11 @@ const SignIn = ({navigation, route}) => {
         }}>
         <KeyboardAwareScrollView
           showsVerticalScrollIndicator={false}
-          style={{width: '100%', height: '100%',}}
-          contentContainerStyle={{alignItems:'center'}}
-        
-          >
-            
+          style={{ width: '100%', height: '100%', }}
+          contentContainerStyle={{ alignItems: 'center' }}
+
+        >
+
           <Text
             style={{
               marginTop: StatusBar.currentHeight || 40,
@@ -114,7 +114,7 @@ const SignIn = ({navigation, route}) => {
 
           <Image
             source={require('../../assets/images/signIn.png')}
-            style={{height: 200, width: '80%', marginTop: 20}}
+            style={{ height: 200, width: '80%', marginTop: 20 }}
           />
 
           <View style={styles.container}>
@@ -128,23 +128,19 @@ const SignIn = ({navigation, route}) => {
                 }}>
                 Phone Number
               </Text>
-              <View style={styles.input}>
-                <Text>+92</Text>
+              <View style={styles.passwordContainer}>
+                <Text style={{ marginLeft: 5, borderRadius:5, borderWidth:1, borderColor:'lightgray', width:'10%', textAlign:'center'}}>+92</Text>
                 <TextInput
-                  style={{
-                    paddingRight: 8,
-
-                    paddingLeft: 3,
-                    width: '70%',
-                  }}
+                  style={[styles.input, { width: '88%'}]}
                   value={phoneNumber}
                   keyboardType="numeric"
                   onChangeText={text => mobileNumberValidate(text)}
                 />
-              </View>
 
+
+              </View>
               {phoneNumErrorMsg != '' && (
-                <Text style={{color: 'red', fontSize: 16, textAlign: 'right'}}>
+                <Text style={{ color: 'red', fontSize: 16, textAlign: 'right' }}>
                   {phoneNumErrorMsg}
                 </Text>
               )}
@@ -161,7 +157,7 @@ const SignIn = ({navigation, route}) => {
               </Text>
               <View style={styles.passwordContainer}>
                 <TextInput
-                  style={[styles.input, {width: '90%'}]}
+                  style={[styles.input, { width: '90%' }]}
                   value={password}
                   keyboardType="numeric"
                   secureTextEntry={showPassword}
@@ -173,14 +169,14 @@ const SignIn = ({navigation, route}) => {
                   }
                   color="#000"
                   size={20}
-                  style={{marginRight: 15}}
+                  style={{ marginRight: 15 }}
                   onPress={() => this.showHidePassword()}
                 />
               </View>
               <TouchableOpacity
-                style={{alignSelf: 'flex-end', marginTop: 10}}
+                style={{ alignSelf: 'flex-end', marginTop: 10 }}
                 onPress={() => navigation.navigate('ForgetPassword')}>
-                <Text style={{color: 'red', fontSize: 15, fontWeight: 'bold'}}>
+                <Text style={{ color: 'red', fontSize: 15, fontWeight: 'bold' }}>
                   Forgot Password?
                 </Text>
               </TouchableOpacity>
@@ -248,17 +244,17 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-  const {signInReducer} = state;
-  const {phone, password, loading} = signInReducer;
+  const { signInReducer } = state;
+  const { phone, password, loading } = signInReducer;
   console.log('Reducer Phone Number', phone);
-  return {phone, password, loading};
+  return { phone, password, loading };
 };
 
 const mapDispatch = state => {
-  const {signInReducer} = state;
-  const {phone, password, loading} = signInReducer;
+  const { signInReducer } = state;
+  const { phone, password, loading } = signInReducer;
   console.log('Reducer Phone Number', phone);
-  return {phone, password, loading};
+  return { phone, password, loading };
 };
 
 export default connect(mapStateToProps, {

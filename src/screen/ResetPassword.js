@@ -17,12 +17,14 @@ import {
   resetError,
 } from '../redux/actions/resetPassActions';
 import {resetPasswordCall} from '../service/Api';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
 
 const ResetPassword = ({navigation}) => {
   const [showPassword, setShowPassword] = useState(true);
   const [showConfirmPassword, setshowConfirmPassword] = useState(true);
   const [password, setPassword] = useState('');
   const [confPassword, setConfPassword] = useState('');
+  const [passwordErr, setPasswordErr] = useState('');
 
   showHidePassword = () => {
     // console.log('Called on Icon Tap', this.props.getPhoneNumber())
@@ -77,6 +79,13 @@ const ResetPassword = ({navigation}) => {
           flex: 1,
           alignItems: 'center',
         }}>
+            <KeyboardAwareScrollView
+          showsVerticalScrollIndicator={false}
+          style={{ width: '100%', height: '100%', }}
+          contentContainerStyle={{ alignItems: 'center' }}
+
+        >
+
         <Image
           source={require('../../assets/images/forgetPassword.png')}
           style={{height: 200, width: '80%', marginTop: 100}}
@@ -105,7 +114,7 @@ const ResetPassword = ({navigation}) => {
                 color="#000"
                 size={20}
                 style={{marginRight: 5}}
-                onPress={() => this.showHidePassword()}
+                onPress={() => showHidePassword()}
               />
             </View>
           </View>
@@ -133,9 +142,14 @@ const ResetPassword = ({navigation}) => {
                 color="#000"
                 size={20}
                 style={{marginRight: 5}}
-                 onPress={() => this.showHideConfirmPassword()}
+                 onPress={() => showHideConfirmPassword()}
               />
             </View>
+            {passwordErr != '' && (
+                <Text style={{ color: 'red', fontSize: 16, textAlign: 'right' }}>
+                  {passwordErr}
+                </Text>
+              )}
           </View>
         </View>
         <GradientButton
@@ -143,6 +157,7 @@ const ResetPassword = ({navigation}) => {
           width={'90%'}
           height={60}
           action={() => ValidatePassword()}></GradientButton>
+          </KeyboardAwareScrollView>
       </LinearGradient>
     </SafeAreaView>
   );
