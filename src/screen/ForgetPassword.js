@@ -6,31 +6,39 @@ import { connect } from 'react-redux'
 import {sendOTPCall} from '../service/Api'
 import { forgetError, forgetResponse, forgetRequest } from '../redux/actions/forgetActions'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
+import Loader from '../service/Loader';
 var height=Dimensions.get('window').height;
 const ForgetPassword = ({navigation}) => {
     const [phoneNumErrorMsg, setPhoneNumErrorMsg] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [phoneRegix, setPhoneRegix] = useState('');
+    const [isLoading, setisLoading] = useState(false);
     sendOTPServiceCall=()=>{
+      
         //   if(phoneNumber == ''){
-// return
+        // return
         //   }else
         //   {
             if(phoneNumber){
+              setisLoading(true)
             let countryCode="+92"+phoneNumber
              const data={
                  phone:countryCode
              }
               sendOTPCall(data).then((response) => {
+               
                 if (response.status === 1) {
                     console.log('response', response.data)
                     navigation.navigate('Verification', {screenName:'forget'})
+                    setisLoading(false)
                 }
                 else {
                     console.log('response error', response.status)
+                    setisLoading(false)
                 }
             }).catch((error) => {
                 console.log('error', error)
+                setisLoading(false)
             })
         }
         else{
@@ -105,7 +113,11 @@ const ForgetPassword = ({navigation}) => {
               </Text>
             )}
           </View>
-                <GradientButton height={60} title={'Send'} width={'90%'} action={()=>sendOTPServiceCall()}/>
+               {!isLoading?(
+                  <GradientButton height={60} title={'Send'} width={'90%'} action={()=>sendOTPServiceCall()}/>
+               ):(
+                <Loader/>
+               )}
 
             </View>
 

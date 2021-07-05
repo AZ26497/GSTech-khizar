@@ -67,10 +67,12 @@ const VerificationCode = ({ navigation, route }) => {
             }
             else {
                 alert('Invalid OTP')
+                setOTP("")
                 console.log('response error', response.status)
             }
 
         }).catch((error) => {
+            setOTP("")
             alert('Invalid OTP')
             console.log('error', error)
             setLoading(false)
@@ -96,7 +98,9 @@ const VerificationCode = ({ navigation, route }) => {
                         <Text style={{ width: 200, textAlign: 'center', fontSize: 16 }}>A code has been sent to +923343534 via sms</Text>
                         <OTPInputView
                             style={{ width: '60%', height: 130 }}
+                           editable={true}
                             pinCount={4}
+                          //  clearInputs={true}
                             autoFocusOnLoad
                             keyboardType='number-pad'
                             codeInputFieldStyle={styles.underlineStyleBase}
@@ -104,10 +108,11 @@ const VerificationCode = ({ navigation, route }) => {
                             placeholderTextColor='black'
                             onCodeFilled={(code => {
                                 // navigation.avigate('ResetPassword')
-                                // verifyOTPCodne(code, 'verify')
+                                verifyOTPCode(code, 'verify')
                                 setOTP(code)
                                 // navigation.navigate('Home')
                             })}
+                            
                         />
                         {loading == true ?
                             <ActivityIndicator size="large" color="gray" />
@@ -146,11 +151,12 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderBottomWidth: 1,
         color: 'black',
-        fontSize: 25
+        fontSize: 25,
     },
 
     underlineStyleHighLighted: {
         borderColor: "white",
+        
     },
 });
 
