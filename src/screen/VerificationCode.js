@@ -108,7 +108,7 @@ const VerificationCode = ({ navigation, route }) => {
                             placeholderTextColor='black'
                             onCodeFilled={(code => {
                                 // navigation.avigate('ResetPassword')
-                                verifyOTPCode(code, 'verify')
+                               // verifyOTPCode(code, 'verify')
                                 setOTP(code)
                                 // navigation.navigate('Home')
                             })}
