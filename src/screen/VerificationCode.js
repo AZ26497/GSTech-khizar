@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
 
     underlineStyleHighLighted: {
         borderColor: "white",
-    },
+    },//waqar
 });
 
 export default VerificationCode;
