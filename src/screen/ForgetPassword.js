@@ -83,29 +83,23 @@ const ForgetPassword = ({navigation}) => {
 
             <View style={styles.container}>
             <View style={styles.textFieldCont}>
-            <Text
-              style={{
-                marginBottom: 5,
-                fontWeight: 'bold',
-                color: 'white',
-                fontSize: 20,
-              }}>
-              Phone Number
-            </Text>
-            <View style={styles.input}>
-              <Text>+92</Text>
-              <TextInput
+              <Text
                 style={{
-                  paddingRight: 8,
-
-                  paddingLeft: 3,
-                  width: '70%',
-                }}
-                value={phoneNumber}
-                keyboardType="numeric"
-                onChangeText={text => mobileNumberValidate(text)}
-              />
-            </View>
+                  marginBottom: 5,
+                  fontWeight: 'bold',
+                  color: 'white',
+                  fontSize: 20,
+                }}>
+                Phone Number
+              </Text>
+              <View style={styles.passwordContainer}>
+                <Text style={{ marginLeft: 5, borderRadius:5, borderWidth:1, borderColor:'lightgray', width:'10%', textAlign:'center'}}>+92</Text>
+                <TextInput
+                  style={[styles.input, { width: '88%'}]}
+                  value={phoneNumber}
+                  keyboardType="numeric"
+                  onChangeText={text => mobileNumberValidate(text)}
+                />
 
             {phoneNumErrorMsg != '' && (
               <Text style={{color: 'red', fontSize: 16, textAlign: 'right'}}>
@@ -118,6 +112,7 @@ const ForgetPassword = ({navigation}) => {
                ):(
                 <Loader/>
                )}
+
 
             </View>
 
@@ -185,6 +180,15 @@ const styles = StyleSheet.create({
         width: '100%',
         borderRadius: 15,
         flexDirection: 'row',
+      },
+      passwordContainer: {
+        flexDirection: 'row',
+        borderColor: '#000',
+        backgroundColor: 'white',
+        borderRadius: 15,
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'space-around',
       },
 });
 const mapStateToProps = state => {

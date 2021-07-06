@@ -4,6 +4,7 @@ import WorkRideListItem from '../../component/WorkRideListItem'
 import LinearGradient from 'react-native-linear-gradient';
 import { getScheduledRideList, deleteScheduledRideCall } from '../../service/Api'
 import Loader from '../../service/Loader'
+import { calculateTimeDifference , getTime} from '../../common/Index';
 
 const WorkRide = ({ navigation }) => {
   const [rideList, setRideList] = useState([])
@@ -51,16 +52,12 @@ const WorkRide = ({ navigation }) => {
   }
 
   const renderItem = ({ item }) => (
-   // console.log("item",item.rideStatus)
-    <WorkRideListItem action={() => {
-      if(item.rideStatus==="started"){
-        navigation.navigate('RideDetail',{screenName:'workRide', item:item})
-      }
-      else {
-        navigation.navigate('Schedule',{screenName:'workRide', itemID:item._id})
-      }
-    }} itemDetail={item} deleteItemCall={()=>deleteScheduledRide(item)}/>
-  );
+   <WorkRideListItem action={() =>{
+     console.log('Item details on render' , item)
+     const hourDifferenc = calculateTimeDifference(getTime(item.pickDateTime))
+     {hourDifferenc <=3?navigation.navigate('Schedule',{screenName:'workRide', itemID:item._id, fieldsEditable:false}):navigation.navigate('Schedule',{screenName:'workRide', itemID:item._id, fieldsEditable:true})}
+  }}itemDetail={item} deleteItemCall={()=>deleteScheduledRide(item)} navigation={navigation}/>
+    );
 
 
   return (

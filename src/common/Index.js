@@ -3,14 +3,14 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage'
 import Moment from 'moment'
 
-export const saveToken=async(token)=>{
-        console.log('Ssave Token Called', token)
-         await AsyncStorage.setItem('token', JSON.stringify(token) )
-    
+export const saveToken = async (token) => {
+    console.log('Ssave Token Called', token)
+    await AsyncStorage.setItem('token', JSON.stringify(token))
+
 }
 
 
-export const getToken=async()=> {
+export const getToken = async () => {
     const token = await AsyncStorage.getItem('token')
     return token;
 }
@@ -31,3 +31,17 @@ export const getTime = (str) => {
 
     return timeArray[0]
 }
+
+export const calculateTimeDifference = (rideTime) => {
+    Moment.locale('en')
+    var now = Moment(new Date()).format("HH:mm:ss a");
+    console.log('Current Time', now);
+
+    rideTime = '16:00:00'
+    var ms = Moment(rideTime, "HH:mm:ss a").diff(Moment(now, "HH:mm:ss a"));
+    var d = Moment.duration(ms);
+
+    console.log('Calculated time difference', d.hours());
+    return d.hours()
+}
+

@@ -7,14 +7,17 @@ import Loader from '../service/Loader'
 import GradientButton from '../common/GradientButton'
 import AsyncStorage from '@react-native-community/async-storage'
 import {saveToken} from '../common/Index'
+import {useSelector} from 'react-redux'
 const VerificationCode = ({ navigation, route }) => {
     const [disableResendBtn, setResendBtnDisable] = useState(true)
     const [timerCount, setTimer] = useState(60);
     const { screenName } = route.params
     const [loading, setLoading] = useState(false);
     const [otp, setOTP] = useState('');
+    const phoneNumber = useSelector(state=>state.signInReducer.phone)
 
     useEffect(() => {
+        console.log('Phone got from Reducer' , phoneNumber)
         timerFunc()
     }, [navigation]);
     const timerFunc = () => {
@@ -42,12 +45,14 @@ const VerificationCode = ({ navigation, route }) => {
         var data = {}
         if (type == 'verify') {
             var data = {
-                phone: '+923491052395',
+
+                phone: phoneNumber,
                 otp: code
             }
         } else {
             data = {
-                phone: '+923491052395'
+
+                phone:phoneNumber
             }
         }
 
@@ -95,7 +100,8 @@ const VerificationCode = ({ navigation, route }) => {
             >
                 <View style={styles.container}>
                     <View style={{ alignSelf: 'center', flex: 1, alignItems: 'center', justifyContent: 'center', width: '100%' }}>
-                        <Text style={{ width: 200, textAlign: 'center', fontSize: 16 }}>A code has been sent to xxxxx via sms</Text>
+
+                        <Text style={{ width: 200, textAlign: 'center', fontSize: 16 }}>A code has been sent to {phoneNumber} via sms</Text>
                         <OTPInputView
                             style={{ width: '60%', height: 130 }}
                            editable={true}
