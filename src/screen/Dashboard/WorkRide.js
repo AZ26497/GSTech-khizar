@@ -51,7 +51,15 @@ const WorkRide = ({ navigation }) => {
   }
 
   const renderItem = ({ item }) => (
-    <WorkRideListItem action={() => navigation.navigate('Schedule',{screenName:'workRide', itemID:item._id})} itemDetail={item} deleteItemCall={()=>deleteScheduledRide(item)}/>
+   // console.log("item",item.rideStatus)
+    <WorkRideListItem action={() => {
+      if(item.rideStatus==="started"){
+        navigation.navigate('RideDetail',{screenName:'workRide', item:item})
+      }
+      else {
+        navigation.navigate('Schedule',{screenName:'workRide', itemID:item._id})
+      }
+    }} itemDetail={item} deleteItemCall={()=>deleteScheduledRide(item)}/>
   );
 
 

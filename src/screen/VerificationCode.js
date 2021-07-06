@@ -42,12 +42,12 @@ const VerificationCode = ({ navigation, route }) => {
         var data = {}
         if (type == 'verify') {
             var data = {
-                phone: '+923350520050',
+                phone: '+923491052395',
                 otp: code
             }
         } else {
             data = {
-                phone: '+923350520050'
+                phone: '+923491052395'
             }
         }
 
@@ -95,7 +95,7 @@ const VerificationCode = ({ navigation, route }) => {
             >
                 <View style={styles.container}>
                     <View style={{ alignSelf: 'center', flex: 1, alignItems: 'center', justifyContent: 'center', width: '100%' }}>
-                        <Text style={{ width: 200, textAlign: 'center', fontSize: 16 }}>A code has been sent to +923343534 via sms</Text>
+                        <Text style={{ width: 200, textAlign: 'center', fontSize: 16 }}>A code has been sent to xxxxx via sms</Text>
                         <OTPInputView
                             style={{ width: '60%', height: 130 }}
                            editable={true}
