@@ -6,6 +6,7 @@ import {
   TextInput,
   Image,
   SafeAreaView,
+  ActivityIndicator
 } from 'react-native';
 import GradientButton from '../common/GradientButton';
 import LinearGradient from 'react-native-linear-gradient';
@@ -24,47 +25,51 @@ const ResetPassword = ({navigation}) => {
   const [showConfirmPassword, setshowConfirmPassword] = useState(true);
   const [password, setPassword] = useState('');
   const [confPassword, setConfPassword] = useState('');
+  const [isLoading, setisLoading] = useState(false);
   const [passwordErr, setPasswordErr] = useState('');
+
 
   showHidePassword = () => {
     // console.log('Called on Icon Tap', this.props.getPhoneNumber())
     setShowPassword(!showPassword);
-    
   };
   showHideConfirmPassword = () => {
     // console.log('Called on Icon Tap', this.props.getPhoneNumber())
     setshowConfirmPassword(!showConfirmPassword);
-    
   };
-  function ValidatePassword(){
+  function ValidatePassword() {
     if (password) {
-        if (confPassword) {
-          if (password === confPassword) {
-            const data = {
-                phone: '+923350520050',
-                password: password
-            }
-            console.log('API Data', data)
-            resetPasswordCall(data).then((response) => {
-                if (response.status === 1) {
-                    console.log('response', response.data)
-                    navigation.navigate('SignIn', { screenName: 'reset' })
-                }
-                else {
-                    console.log('response error', response.status)
-                }
-            }).catch((error) => {
-                console.log('error', error)
+      if (confPassword) {
+        if (password === confPassword) {
+          setisLoading(true)
+          const data = {
+            phone: '+923350520050',
+            password: password,
+          };
+          console.log('API Data', data);
+          resetPasswordCall(data)
+            .then(response => {
+              if (response.status === 1) {
+                console.log('response', response.data);
+                navigation.navigate('SignIn', {screenName: 'reset'});
+              } else {
+                console.log('response error', response.status);
+              }
+              setisLoading(false)
             })
-          } else {
-            alert('Password Should Be Same');
-          }
+            .catch(error => {
+              console.log('error', error);
+            });
         } else {
-          alert('Enter Confirm Password');
+          
+          alert('Password Should Be Same');
         }
       } else {
-        alert('Enter Password');
+        alert('Enter Confirm Password');
       }
+    } else {
+      alert('Enter Password');
+    }
   }
 
   return (
@@ -138,10 +143,15 @@ const ResetPassword = ({navigation}) => {
                 onChangeText={text => setConfPassword(text)}
               />
               <Icon
-                name={showConfirmPassword == true ? 'eye-off-outline' : 'eye-outline'}
+                name={
+                  showConfirmPassword == true
+                    ? 'eye-off-outline'
+                    : 'eye-outline'
+                }
                 color="#000"
                 size={20}
                 style={{marginRight: 5}}
+
                  onPress={() => showHideConfirmPassword()}
               />
             </View>
@@ -152,12 +162,17 @@ const ResetPassword = ({navigation}) => {
               )}
           </View>
         </View>
-        <GradientButton
+     {!isLoading?(
+          <GradientButton
           title={'Reset'}
           width={'90%'}
           height={60}
           action={() => ValidatePassword()}></GradientButton>
+     ):(
+       <ActivityIndicator size='large'/>
+     )}
           </KeyboardAwareScrollView>
+
       </LinearGradient>
     </SafeAreaView>
   );

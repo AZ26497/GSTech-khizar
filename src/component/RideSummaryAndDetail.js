@@ -32,8 +32,15 @@ export default class RideSummaryAndDetail extends Component {
             style={{ width: '90%', height: '60%' }}
           />
           <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 15 }}>Driver</Text>
+       
         </View>
+        <MaterialIcons
+            style={{position:'absolute'}}
+            name={'keyboard-arrow-down'}
+          
+            size={30}/>
         {/* Car detail */}
+       
 
         <View style={{ alignSelf: 'flex-end' , marginTop:30}}>
 
@@ -119,6 +126,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingLeft: 20,
     paddingRight: 10,
-    paddingBottom: 10
+    paddingBottom: 10,
+    height:'50%',
   },
 });
