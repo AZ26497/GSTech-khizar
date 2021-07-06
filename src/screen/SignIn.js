@@ -250,13 +250,6 @@ const mapStateToProps = state => {
   return { phone, password, loading };
 };
 
-const mapDispatch = state => {
-  const { signInReducer } = state;
-  const { phone, password, loading } = signInReducer;
-  console.log('Reducer Phone Number', phone);
-  return { phone, password, loading };
-};
-
 export default connect(mapStateToProps, {
   signInRequets,
   signInResponse,
