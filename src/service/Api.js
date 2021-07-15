@@ -160,3 +160,69 @@ export const getScheduleRideDetails = async (itemID) => {
         });
     });
 }
+
+export const saveRideDetailChanges = async (itemID,data) => {
+    console.log('Get List')
+    const AUTH_TOKEN = await getToken()
+    const newOne = 'Bearer '+JSON.parse(AUTH_TOKEN)
+    console.log("Token of api calling",newOne);
+    return new Promise((resolve, reject) => {
+        var qs = require('qs');
+        var data1 = qs.stringify(
+            data
+        );
+        axios.put(('http://162.0.236.163:8000/schedule/'+itemID), 
+            data1,{
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': newOne,
+            },
+        
+        }).then(response => {
+            console.log('API', 'SCHEDULED RIDE DETAILS RESPONSE', response);
+            resolve(response.data);
+        }).catch(error => {
+            console.log('API', 'SCHEDULED RIDE DETAILS Error', error);
+            reject(error);
+        });
+    });
+}
+
+export const getCompletedRideList = async (itemID,data) => {
+    const AUTH_TOKEN = await getToken()
+    const newOne = 'Bearer '+JSON.parse(AUTH_TOKEN)
+    return new Promise((resolve, reject) => {
+        axios.get(('http://162.0.236.163:8000/schedule/completed'), {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': newOne,
+            },
+        }).then(response => {
+            console.log('API', 'Completed DETAILS RESPONSE', response);
+            resolve(response.data);
+        }).catch(error => {
+            console.log('API', 'Completed RIDE DETAILS Error', error);
+            reject(error);
+        });
+    });
+}
+
+
+export const getStartedRideDetail = async () => {
+    const AUTH_TOKEN = await getToken()
+    const newOne = 'Bearer '+JSON.parse(AUTH_TOKEN)
+    return new Promise((resolve, reject) => {
+        axios.get(('http://162.0.236.163:8000/schedule/started'), {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': newOne,
+            },
+        }).then(response => {
+            console.log('API', 'Started RIDE DETAILS RESPONSE', response);
+            resolve(response.data);
+        }).catch(error => {
+            console.log('API', 'Started RIDE DETAILS Error', error);
+            reject(error);
+        });
+    });
+}

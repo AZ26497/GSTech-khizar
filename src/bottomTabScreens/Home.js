@@ -5,8 +5,11 @@ import Dashboard from '../screen/Dashboard/Dashboard'
 const Home =()=> {
 
     return (
-   
+      <SafeAreaView style={{
+        flex: 1, backgroundColor: '#38ef7d'
+      }}>
       <Dashboard />
+      </SafeAreaView>
     )
   }
 

@@ -1,44 +1,36 @@
 import React, { Component,useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Image, StatusBar, TouchableOpacity, SafeAreaView ,Dimensions} from 'react-native';
+import { StyleSheet, Text, View, TextInput, Image, StatusBar, TouchableOpacity, SafeAreaView ,Dimensions, Platform} from 'react-native';
 import GradientButton from '../common/GradientButton'
 import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux'
 import {sendOTPCall} from '../service/Api'
 import { forgetError, forgetResponse, forgetRequest } from '../redux/actions/forgetActions'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
-import Loader from '../service/Loader';
 var height=Dimensions.get('window').height;
 const ForgetPassword = ({navigation}) => {
     const [phoneNumErrorMsg, setPhoneNumErrorMsg] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [phoneRegix, setPhoneRegix] = useState('');
-    const [isLoading, setisLoading] = useState(false);
     sendOTPServiceCall=()=>{
-      
         //   if(phoneNumber == ''){
-        // return
+// return
         //   }else
         //   {
             if(phoneNumber){
-              setisLoading(true)
             let countryCode="+92"+phoneNumber
              const data={
                  phone:countryCode
              }
               sendOTPCall(data).then((response) => {
-               
                 if (response.status === 1) {
                     console.log('response', response.data)
                     navigation.navigate('Verification', {screenName:'forget'})
-                    setisLoading(false)
                 }
                 else {
                     console.log('response error', response.status)
-                    setisLoading(false)
                 }
             }).catch((error) => {
                 console.log('error', error)
-                setisLoading(false)
             })
         }
         else{
@@ -101,18 +93,15 @@ const ForgetPassword = ({navigation}) => {
                   onChangeText={text => mobileNumberValidate(text)}
                 />
 
-            {phoneNumErrorMsg != '' && (
-              <Text style={{color: 'red', fontSize: 16, textAlign: 'right'}}>
-                {phoneNumErrorMsg}
-              </Text>
-            )}
-          </View>
-               {!isLoading?(
-                  <GradientButton height={60} title={'Send'} width={'90%'} action={()=>sendOTPServiceCall()}/>
-               ):(
-                <Loader/>
-               )}
 
+              </View>
+              {phoneNumErrorMsg != '' && (
+                <Text style={{ color: 'red', fontSize: 16, textAlign: 'right' }}>
+                  {phoneNumErrorMsg}
+                </Text>
+              )}
+            </View>
+                <GradientButton height={60} title={'Send'} width={'90%'} action={()=>sendOTPServiceCall()}/>
 
             </View>
 
@@ -186,6 +175,7 @@ const styles = StyleSheet.create({
         borderColor: '#000',
         backgroundColor: 'white',
         borderRadius: 15,
+        height:50,
         width: '100%',
         alignItems: 'center',
         justifyContent: 'space-around',

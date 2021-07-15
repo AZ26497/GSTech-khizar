@@ -125,8 +125,8 @@ const {coordinates, setCoordinates} = useState([
             </View>
           </View>
           <View style={{ height: '20%', width: '95%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-            <GradientButton title={'Book Now'} width={'45%'} height={60} action={() => navigation.navigate('RideDetail')}></GradientButton>
-            <GradientButton title={'Schedule'} width={'45%'} height={60} action={() => navigation.navigate('Schedule')}></GradientButton>
+            <GradientButton title={'Book Now'} width={'45%'} height={60} action={() => navigation.navigate('RideDetail',{item:''})}></GradientButton>
+            <GradientButton title={'Schedule'} width={'45%'} height={60} action={() => navigation.navigate('Schedule',{screenName:'bookRide', itemID:'', fieldsEditable:true})}></GradientButton>
 
           </View>
         </View>
