@@ -4,6 +4,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import GradientButton from '../common/GradientButton'
 import Feather from 'react-native-vector-icons/Feather'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import {getTime , getDate} from '../common/Index'
 
 
 export default class RideSummaryAndDetail extends Component {
@@ -31,7 +32,7 @@ export default class RideSummaryAndDetail extends Component {
             source={require('../../assets/images/Avatar.png')}
             style={{ width: '90%', height: '60%' }}
           />
-          <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 15 }}>Driver</Text>
+          <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 15 }}>{this.props.rideInfo.driver.fullname}</Text>
        
         </View>
         <MaterialIcons
@@ -44,8 +45,8 @@ export default class RideSummaryAndDetail extends Component {
 
         <View style={{ alignSelf: 'flex-end' , marginTop:30}}>
 
-          <Text style={{ backgroundColor: '#f5f5f5', borderRadius: 15, textAlign: 'center', fontWeight: 'bold', fontSize: 18 }}>AH-234</Text>
-          <Text>Suzuki WagenR</Text>
+          <Text style={{ backgroundColor: '#f5f5f5', borderRadius: 15, textAlign: 'center', fontWeight: 'bold', fontSize: 18 }}>{this.props.rideInfo.driver.vehicle_no}</Text>
+          <Text>{this.props.rideInfo.driver.vehicle_model}</Text>
 
         </View>
 
@@ -54,19 +55,19 @@ export default class RideSummaryAndDetail extends Component {
 
         <View style={{width: '90%', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between',  borderRadius: 20, position: 'absolute', bottom: 20}}>
           <View style={{ flexDirection: 'row', height: 70,width:'100%', margin:10}}>
-          <View style={{ flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between', marginLeft:5 , marginRight:5}}>
+          {/* <View style={{ flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between', marginLeft:5 , marginRight:5}}>
               <Text style={{textAlign:'left', fontSize:12}}>4:35</Text>
               <Text style={{textAlign:'left', fontSize:12}}>7:00</Text>
 
-            </View>
+            </View> */}
             <View style={{ flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center'}}>
               <Ionicons name={'ellipse'} size={12} color={'#38ef7d'} />
               <View style={{ height: '55%', width: 2, backgroundColor: 'black' }}></View>
               <Ionicons name={'caret-down'} size={13} color={'black'} />
             </View>
             <View style={{ flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between', marginLeft:5 }}>
-              <Text style={{textAlign:'left'}}>405 Johar Town Lahore</Text>
-              <Text style={{textAlign:'left'}}>Lahore Airport</Text>
+              <Text style={{textAlign:'left'}}>{this.props.rideInfo.pickLocation}</Text>
+              <Text style={{textAlign:'left'}}>{this.props.rideInfo.dropLocation}</Text>
 
             </View>
           </View>
@@ -117,7 +118,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     bottom: 0,
     backgroundColor: 'white',
-    height:Platform.OS=='ios'?'60%':'50%',
+    height:'100%',
     width: '100%',
     position: 'absolute',
     borderTopRightRadius: 30.0,

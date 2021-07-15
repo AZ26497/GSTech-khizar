@@ -36,8 +36,6 @@ export const calculateTimeDifference = (rideTime) => {
     Moment.locale('en')
     var now = Moment(new Date()).format("HH:mm:ss a");
     console.log('Current Time', now);
-
-    rideTime = '16:00:00'
     var ms = Moment(rideTime, "HH:mm:ss a").diff(Moment(now, "HH:mm:ss a"));
     var d = Moment.duration(ms);
 

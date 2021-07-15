@@ -1,5 +1,5 @@
 import React, { Component,useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Image, StatusBar, TouchableOpacity, SafeAreaView ,Dimensions} from 'react-native';
+import { StyleSheet, Text, View, TextInput, Image, StatusBar, TouchableOpacity, SafeAreaView ,Dimensions, Platform} from 'react-native';
 import GradientButton from '../common/GradientButton'
 import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux'
@@ -175,6 +175,7 @@ const styles = StyleSheet.create({
         borderColor: '#000',
         backgroundColor: 'white',
         borderRadius: 15,
+        height:50,
         width: '100%',
         alignItems: 'center',
         justifyContent: 'space-around',

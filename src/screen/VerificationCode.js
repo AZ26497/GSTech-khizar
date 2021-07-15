@@ -1,23 +1,23 @@
 import React, { Component, useState, useEffect } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView,ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView, ActivityIndicator } from 'react-native';
 import OTPInputView from '@twotalltotems/react-native-otp-input'
 import LinearGradient from 'react-native-linear-gradient';
 import { verifyOTPCall, verifyResendOTP } from '../service/Api'
 import Loader from '../service/Loader'
 import GradientButton from '../common/GradientButton'
 import AsyncStorage from '@react-native-community/async-storage'
-import {saveToken} from '../common/Index'
-import {useSelector} from 'react-redux'
+import { saveToken } from '../common/Index'
+import { useSelector } from 'react-redux'
 const VerificationCode = ({ navigation, route }) => {
     const [disableResendBtn, setResendBtnDisable] = useState(true)
     const [timerCount, setTimer] = useState(60);
     const { screenName } = route.params
     const [loading, setLoading] = useState(false);
     const [otp, setOTP] = useState('');
-    const phoneNumber = useSelector(state=>state.signInReducer.phone)
+    const phoneNumber = useSelector(state => state.signInReducer.phone)
 
     useEffect(() => {
-        console.log('Phone got from Reducer' , phoneNumber)
+        console.log('Phone got from Reducer', phoneNumber)
         timerFunc()
     }, [navigation]);
     const timerFunc = () => {
@@ -35,7 +35,7 @@ const VerificationCode = ({ navigation, route }) => {
             clearInterval(interval)
         }
     };
-    
+
     const verifyOTPCode = (code, type) => {
         setLoading(true)
         console.log('Code type', type)
@@ -52,7 +52,7 @@ const VerificationCode = ({ navigation, route }) => {
         } else {
             data = {
 
-                phone:phoneNumber
+                phone: phoneNumber
             }
         }
 
@@ -60,8 +60,9 @@ const VerificationCode = ({ navigation, route }) => {
         verifyResendOTP(data, type).then(async (response) => {
             if (response.status === 1) {
                 setLoading(false)
-                console.log('token', response.data.token)
-                saveToken(response.data.token)
+                if (type == 'verify') {
+                    saveToken(response.data.token)
+                }
                 if (type == 'verify') {
                     if (screenName == 'forget') {
                         navigation.navigate('ResetPassword')
@@ -72,12 +73,10 @@ const VerificationCode = ({ navigation, route }) => {
             }
             else {
                 alert('Invalid OTP')
-                setOTP("")
                 console.log('response error', response.status)
             }
 
         }).catch((error) => {
-            setOTP("")
             alert('Invalid OTP')
             console.log('error', error)
             setLoading(false)
@@ -104,9 +103,9 @@ const VerificationCode = ({ navigation, route }) => {
                         <Text style={{ width: 200, textAlign: 'center', fontSize: 16 }}>A code has been sent to {phoneNumber} via sms</Text>
                         <OTPInputView
                             style={{ width: '60%', height: 130 }}
-                           editable={true}
+                            editable={true}
                             pinCount={4}
-                          //  clearInputs={true}
+                            //  clearInputs={true}
                             autoFocusOnLoad
                             keyboardType='number-pad'
                             codeInputFieldStyle={styles.underlineStyleBase}
@@ -114,11 +113,11 @@ const VerificationCode = ({ navigation, route }) => {
                             placeholderTextColor='black'
                             onCodeFilled={(code => {
                                 // navigation.avigate('ResetPassword')
-                               // verifyOTPCode(code, 'verify')
+                                // verifyOTPCode(code, 'verify')
                                 setOTP(code)
                                 // navigation.navigate('Home')
                             })}
-                            
+
                         />
                         {loading == true ?
                             <ActivityIndicator size="large" color="gray" />
@@ -126,15 +125,15 @@ const VerificationCode = ({ navigation, route }) => {
                             <GradientButton height={60} width={'80%'} title={'Send'} margin={5} action={() => verifyOTPCode(otp, 'verify')} />
                         }
 
-                        {timerCount>0?(
+                        {timerCount > 0 ? (
                             <Text style={{ fontSize: 15, marginTop: 20 }}>{timerCount}</Text>
-                        ):(null)}
-                        <TouchableOpacity 
-                        style={{marginTop: 20 }}
-                        disabled={timerCount<1?false:true} onPress={() =>
-                             verifyOTPCode('', 'resend')
-                             }>
-                            <Text style={{ fontSize: 15, color: timerCount<1? 'black' : 'gray' }}>Resend OTP</Text>
+                        ) : (null)}
+                        <TouchableOpacity
+                            style={{ marginTop: 20 }}
+                            disabled={timerCount < 1 ? false : true} onPress={() =>
+                                verifyOTPCode('', 'resend')
+                            }>
+                            <Text style={{ fontSize: 15, color: timerCount < 1 ? 'black' : 'gray' }}>Resend OTP</Text>
                         </TouchableOpacity>
                     </View>
 
@@ -162,7 +161,7 @@ const styles = StyleSheet.create({
 
     underlineStyleHighLighted: {
         borderColor: "white",
-        
+
     },
 });
 

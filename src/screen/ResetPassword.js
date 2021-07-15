@@ -6,7 +6,8 @@ import {
   TextInput,
   Image,
   SafeAreaView,
-  ActivityIndicator
+  ActivityIndicator,
+  Platform
 } from 'react-native';
 import GradientButton from '../common/GradientButton';
 import LinearGradient from 'react-native-linear-gradient';
@@ -201,6 +202,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 15,
     width: '100%',
+    height:50,
     alignItems: 'center',
     justifyContent: 'space-around',
   },
