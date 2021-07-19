@@ -35,21 +35,23 @@ const RideDetail = ({ navigation, route }) => {
   const [estimatedTime, setEstimatedTime] = useState('')
   const [distanceTravelled, setDistanceTravelled] = useState(0)
   const [routeCoordinates, setRouteCoordinates] = useState([])
-  const origin = { latitude: Number(rideDetails.picklat), longitude: Number(rideDetails.picklong) };
-  const destination = {
-    latitude: Number(rideDetails.driver.lat),
-    longitude: Number(rideDetails.driver.long)
-  };
-  const [coordinates, setCoordinates] = useState(new AnimatedRegion(origin));
-
-  const mapRef = useRef()
-  const [state, setState] = useState(
+  const [region, setRegion] = useState(
     {
-      startingCoord: origin,
-      destinationCoord: {},
-      isLoading: false
+      latitude:73.0396641,
+      longitude:33.7201055,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA,
     }
   )
+  const origin = { latitude: 33.7201055, longitude: 73.0396641 };
+  const destination = {
+    latitude: 33.6967808,
+    longitude: 73.0458092
+  };
+  // const [coordinates, setCoordinates] = useState(new AnimatedRegion(origin));
+
+  const mapRef = useRef()
+
   const GOOGLE_MAPS_APIKEY = 'AIzaSyAG8XBFKHqkH3iKweO_y3iC6kYvcwdsKxY';
   useEffect(() => {
     console.log('Ride Details', rideDetails)
@@ -164,13 +166,12 @@ const RideDetail = ({ navigation, route }) => {
         </View>
         <MapView
           ref={mapRef}
-          initialRegion={{
-            latitude: Number(rideDetails.picklat),
-            longitude: Number(rideDetails.picklong),
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA,
-          }}
-          style={StyleSheet.absoluteFill}>
+          initialRegion={region}
+          style={StyleSheet.absoluteFill}
+          onRegionChange={region => {
+            setRegion({region});
+        }}
+          >
           {/* <Marker.Animated
             ref={marker => { this.marker = marker }}
             coordinate={coordinate}
@@ -197,18 +198,26 @@ const RideDetail = ({ navigation, route }) => {
           )} */}
           <MapView.Marker
             coordinate={{
-              origin
+              latitude: 33.7201055, longitude: 73.0396641
             }}
             title={"title"}
             description={"description"}
           />
           <MapView.Marker
             coordinate={{
-              destination
+              latitude: 33.6967808,
+              longitude: 73.0458092
             }}
             title={"title"}
             description={"description"}
-          />
+          >
+            <Image
+              source={require('../../assets/images/car_top.png')}
+              style={{ width: 50, height: 50 }}
+              title={'Islamabad'}
+              resizeMode="contain"
+            />
+          </MapView.Marker>
 
           <MapViewDirections
             origin={origin}
@@ -227,12 +236,7 @@ const RideDetail = ({ navigation, route }) => {
               console.log('Duration in Min', result.duration)
 
               mapRef.current.fitToCoordinates(result.coordinates, {
-                edgePadding: {
-                  right: 30,
-                  bottom: 300,
-                  left: 30,
-                  top: 100,
-                }
+             
               })
             }}
 
@@ -250,7 +254,7 @@ const RideDetail = ({ navigation, route }) => {
           /> */}
         </MapView>
         <SwipeUpDown
-          swipeHeight={40}
+          swipeHeight={60}
           itemMini={
             <View style={{ height: '100%', width: 400, backgroundColor: '#38ef7d', alignItems: 'center', justifyContent: 'center' }}>
               <MaterialIcons

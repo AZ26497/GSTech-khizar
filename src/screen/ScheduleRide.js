@@ -192,7 +192,7 @@ const ScheduleRide = ({ navigation, route }) => {
             </View>
             <View style={{ flexDirection: 'column', width: '85%' }}>
               <GooglePlacesAutocomplete
-                placeholder={pickUpLocation}
+                placeholder={'G-11, Islamabad, Pakistan'}
                 fetchDetails={true}
                 onPress={(data, details = null) => {
                   // 'details' is provided when fetchDetails = true
@@ -225,7 +225,7 @@ const ScheduleRide = ({ navigation, route }) => {
                   marginLeft: 5,
                 }}></View>
               <GooglePlacesAutocomplete
-                placeholder={dropOffLocation}
+                placeholder={'Islamabad International Airport'}
                 fetchDetails={true}
                 onPress={(data, details = null) => {
                   // 'details' is provided when fetchDetails = true

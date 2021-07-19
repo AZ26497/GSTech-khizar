@@ -179,7 +179,7 @@ const App: () => Node = () => {
             headerBackTitle:''
           }} />
           <Stack.Screen name="Schedule" component={ScheduleRide} options={{
-            title: 'Schedule Date',
+            title: 'Schedule Details',
             headerShown: true,
             headerTransparent: true,
             headerTitleStyle: { alignSelf: 'center', color: 'white', marginRight: 10, fontWeight: 'bold', fontSize: 25 },

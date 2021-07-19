@@ -116,9 +116,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-between',
-    bottom: 0,
+    bottom: 50,
     backgroundColor: 'white',
-    height:'100%',
     width: '100%',
     position: 'absolute',
     borderTopRightRadius: 30.0,
@@ -128,6 +127,6 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 10,
     paddingBottom: 10,
-    height:'50%',
+    height:'45%',
   },
 });

@@ -14,11 +14,11 @@ const WorkRide = ({ navigation }) => {
   useEffect(() => {
     console.log('Screen Focused', isFocused)
     const willFocusSubscription = navigation.addListener('focus', async() => {
-      const rideChangesSaved = await AsyncStorage.getItem('RideChangesSaved')
-      if (JSON.parse(rideChangesSaved)) {
+      // const rideChangesSaved = await AsyncStorage.getItem('RideChangesSaved')
+      // if (JSON.parse(rideChangesSaved)) {
         setLoading(true)
         getScheduleRide()
-      }
+      // }
     });
     return willFocusSubscription;
   }, [navigation]);
