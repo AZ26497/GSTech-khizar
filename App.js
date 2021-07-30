@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import type { Node } from 'react';
 import {
   SafeAreaView,
@@ -16,6 +16,7 @@ import {
   Text,
   useColorScheme,
   View,
+  Alert
 } from 'react-native';
 import { FAB } from 'react-native-paper'
 import {
@@ -48,7 +49,8 @@ import CustomAlert from './src/common/CustomAlert';
 import PaymentMethod from './src/screen/PaymentMethod';
 import RideDetail from './src/screen/RideDetail';
 import ResetPassword from './src/screen/ResetPassword';
-
+import messaging from '@react-native-firebase/messaging';
+import AsyncStorage from '@react-native-community/async-storage'
 
 const bottomTabStack = createMaterialBottomTabNavigator()
 const Stack = createStackNavigator()
@@ -71,11 +73,11 @@ const bottomStackScreen = () => {
       <bottomTabStack.Screen options={{
         tabBarLabel: 'History',
         title: 'History',
-            headerShown: true,
-            headerTransparent: true,
-            headerTitleStyle: { alignSelf: 'center', color: 'white', marginRight: 10, fontWeight: 'bold', fontSize: 25 },
-            headerTintColor: 'white',
-            headerBackTitle:'',
+        headerShown: true,
+        headerTransparent: true,
+        headerTitleStyle: { alignSelf: 'center', color: 'white', marginRight: 10, fontWeight: 'bold', fontSize: 25 },
+        headerTintColor: 'white',
+        headerBackTitle: '',
         tabBarIcon: ({ color, size }) => (
           <Ionicons name={'card-outline'} size={26} color={color} />
         ),
@@ -126,97 +128,198 @@ const bottomStackScreen = () => {
 
 
 const App: () => Node = () => {
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    });
+    // Register background handler
+    messaging().setBackgroundMessageHandler(async remoteMessage => {
+      console.log('Message handled in the background!', remoteMessage);
+    });
 
+    requestUserPermission();
+    createNotificationListeners();
+    return unsubscribe;
+  }, []);
+  async function requestUserPermission() {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+    if (enabled) {
+      console.log('Authorization status:', authStatus);
+    }
+  }
+
+  function HeadlessCheck({ isHeadless }) {
+    if (isHeadless) {
+      // App has been launched in the background by iOS, ignore
+      return null;
+    }
+  
+    return <App />;
+  }
+  
+  function App() {
+    // Your application
+  }
+
+
+  async function requestUserPermission() {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+  
+    if (enabled) {
+      getToken();
+      console.log('Authorization status:', authStatus);
+    }
+  }
+  async function createNotificationListeners() {
+    this.notificationListener = messaging().onMessage(async remoteMessage => {
+      console.log("createNotificationListenersLatest", "notificationListener-remoteMessage", JSON.stringify(remoteMessage))
+      const { notification, data } = remoteMessage;
+      const { title, body, } = notification
+      showAlert(title, body);
+  })
+
+  this.notificationOpenedListener = messaging().setBackgroundMessageHandler(async remoteMessage => {
+      console.log("createNotificationListenersLatest", "notificationOpenedListener-remoteMessage", JSON.stringify(remoteMessage))
+      const { notification, data } = remoteMessage
+      const { title } = notification
+  });
+  this.quitStateListener = messaging().getInitialNotification().then(async remoteMessage => {
+      if (remoteMessage) {
+          const { notification, data } = remoteMessage
+          const { title } = notification
+          console.log('Notification caused app to open from quit state:');
+      }
+  });
+  this.backgroundStateListener = messaging().onNotificationOpenedApp(async remoteMessage => {
+      if (remoteMessage) {
+          const { notification, data } = remoteMessage
+          const { title } = notification
+          console.log('Notification caused app to open from backgroundStateListener:');
+      }
+  });
+}
+  async function getToken() {
+    let fcmToken = await AsyncStorage.getItem('fcmToken');
+    console.log('Token from Storage', fcmToken);
+
+    if (!fcmToken) {
+        fcmToken = await messaging().getToken();
+        console.log('Token from Message', fcmToken);
+
+        if (fcmToken) {
+            // user has a device token
+            await AsyncStorage.setItem('fcmToken', fcmToken);
+        }
+    }
+  }
+  
+ function showAlert(title, body) {
+    Alert.alert(
+      title, body,
+      [
+          { text: 'OK', onPress: () => console.log('OK Pressed') },
+      ],
+      { cancelable: false },
+    );
+  }
+  
   return (
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{
-          headerShown: false
-        }}>
-          <Stack.Screen name="SignIn" component={SignIn} />
-          <Stack.Screen name="Home" children={bottomStackScreen} />
-          <Stack.Screen name="WorkRide" component={WorkRide} options={{
-            title: 'Scheduled Rides',
-            headerShown: true,
-            headerTransparent: true,
-            headerTitleStyle: { alignSelf: 'center', color: 'white', marginRight: 10, fontWeight: 'bold', fontSize: 25 },
-            headerTintColor: 'white',
-            headerBackTitle:''
-          }} />
-          <Stack.Screen name="CustomAlert" component={CustomAlert} />
-          <Stack.Screen name="Verification" component={VerificationCode} options={{
-            title: 'Verification',
-            headerShown: true,
-            headerTransparent: true,
-            headerTitleStyle: { alignSelf: 'center', color: 'white', marginRight: 10, fontWeight: 'bold', fontSize: 25 },
-            headerTintColor: 'white',
-            headerBackTitle:''
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{
+        headerShown: false
+      }}>
+        <Stack.Screen name="SignIn" component={SignIn} />
+        <Stack.Screen name="Home" children={bottomStackScreen} />
+        <Stack.Screen name="WorkRide" component={WorkRide} options={{
+          title: 'Scheduled Rides',
+          headerShown: true,
+          headerTransparent: true,
+          headerTitleStyle: { alignSelf: 'center', color: 'white', marginRight: 10, fontWeight: 'bold', fontSize: 25 },
+          headerTintColor: 'white',
+          headerBackTitle: ''
+        }} />
+        <Stack.Screen name="CustomAlert" component={CustomAlert} />
+        <Stack.Screen name="Verification" component={VerificationCode} options={{
+          title: 'Verification',
+          headerShown: true,
+          headerTransparent: true,
+          headerTitleStyle: { alignSelf: 'center', color: 'white', marginRight: 10, fontWeight: 'bold', fontSize: 25 },
+          headerTintColor: 'white',
+          headerBackTitle: ''
 
-          }} />
+        }} />
 
-          <Stack.Screen name="PersonalRide" component={PersonalRide} options={{
-            title: 'Booking Now',
-            headerShown: true,
-            headerTransparent: true,
-            headerBackTitle:'',
-            headerTitleStyle: { alignSelf: 'center', color: 'black', marginRight: 15, fontWeight: 'bold', fontSize: 25 },
+        <Stack.Screen name="PersonalRide" component={PersonalRide} options={{
+          title: 'Booking Now',
+          headerShown: true,
+          headerTransparent: true,
+          headerBackTitle: '',
+          headerTitleStyle: { alignSelf: 'center', color: 'black', marginRight: 15, fontWeight: 'bold', fontSize: 25 },
 
-          }} />
+        }} />
 
-          <Stack.Screen name="RideDetail" component={RideDetail} options={{
-            title: 'Ride Detail',
-            headerShown: true,
-            headerTransparent: true,
-            headerBackTitle:'',
-            headerTitleStyle: { alignSelf: 'center', color: 'black', marginRight: 15, fontWeight: 'bold', fontSize: 25 },
+        <Stack.Screen name="RideDetail" component={RideDetail} options={{
+          title: 'Ride Detail',
+          headerShown: true,
+          headerTransparent: true,
+          headerBackTitle: '',
+          headerTitleStyle: { alignSelf: 'center', color: 'black', marginRight: 15, fontWeight: 'bold', fontSize: 25 },
 
-          }} />
-          <Stack.Screen name="ForgetPassword" component={ForgetPassword} options={{
-            title: 'Forget Password',
-            headerShown: true,
-            headerTransparent: true,
-            headerTitleStyle: { alignSelf: 'center', color: 'white', marginRight: 10, fontWeight: 'bold', fontSize: 25 },
-            headerTintColor: 'white',
-            headerBackTitle:''
-          }} />
-          <Stack.Screen name="Schedule" component={ScheduleRide} options={{
-            title: 'Schedule Details',
-            headerShown: true,
-            headerTransparent: true,
-            headerTitleStyle: { alignSelf: 'center', color: 'white', marginRight: 10, fontWeight: 'bold', fontSize: 25 },
-            headerTintColor: 'white',
-            headerBackTitle:''
-          }} />
+        }} />
+        <Stack.Screen name="ForgetPassword" component={ForgetPassword} options={{
+          title: 'Forget Password',
+          headerShown: true,
+          headerTransparent: true,
+          headerTitleStyle: { alignSelf: 'center', color: 'white', marginRight: 10, fontWeight: 'bold', fontSize: 25 },
+          headerTintColor: 'white',
+          headerBackTitle: ''
+        }} />
+        <Stack.Screen name="Schedule" component={ScheduleRide} options={{
+          title: 'Schedule Details',
+          headerShown: true,
+          headerTransparent: true,
+          headerTitleStyle: { alignSelf: 'center', color: 'white', marginRight: 10, fontWeight: 'bold', fontSize: 25 },
+          headerTintColor: 'white',
+          headerBackTitle: ''
+        }} />
 
-          <Stack.Screen name="ResetPassword" component={ResetPassword} options={{
-            title: 'Reset Password',
-            headerShown: true,
-            headerTransparent: true,
-            headerTitleStyle: { alignSelf: 'center', color: 'white', marginRight: 10, fontWeight: 'bold', fontSize: 25 },
-            headerTintColor: 'white',
-            headerBackTitle:''
-          }} />
+        <Stack.Screen name="ResetPassword" component={ResetPassword} options={{
+          title: 'Reset Password',
+          headerShown: true,
+          headerTransparent: true,
+          headerTitleStyle: { alignSelf: 'center', color: 'white', marginRight: 10, fontWeight: 'bold', fontSize: 25 },
+          headerTintColor: 'white',
+          headerBackTitle: ''
+        }} />
 
-          <Stack.Screen name="Booking" component={BookingRide} options={{
-            title: 'Ride Options',
-            headerShown: true,
-            headerTransparent: true,
-            headerTitleStyle: { alignSelf: 'center', color: 'black', marginRight: 10, fontWeight: 'bold', fontSize: 25 },
-            headerTintColor: 'black',
-            headerBackTitle:''
-          }} />
+        <Stack.Screen name="Booking" component={BookingRide} options={{
+          title: 'Ride Options',
+          headerShown: true,
+          headerTransparent: true,
+          headerTitleStyle: { alignSelf: 'center', color: 'black', marginRight: 10, fontWeight: 'bold', fontSize: 25 },
+          headerTintColor: 'black',
+          headerBackTitle: ''
+        }} />
 
-          <Stack.Screen name="Payment" component={PaymentMethod} options={{
-            title: 'Payment Method',
-            headerShown: true,
-            headerTransparent: true,
-            headerTitleStyle: { alignSelf: 'center', color: 'white', marginRight: 10, fontWeight: 'bold', fontSize: 25 },
-            headerTintColor: 'white',
-            headerBackTitle:''
-          }} />
+        <Stack.Screen name="Payment" component={PaymentMethod} options={{
+          title: 'Payment Method',
+          headerShown: true,
+          headerTransparent: true,
+          headerTitleStyle: { alignSelf: 'center', color: 'white', marginRight: 10, fontWeight: 'bold', fontSize: 25 },
+          headerTintColor: 'white',
+          headerBackTitle: ''
+        }} />
 
 
-        </Stack.Navigator>
-      </NavigationContainer>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 

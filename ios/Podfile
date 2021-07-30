@@ -4,14 +4,17 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 platform :ios, '10.0'
 
 target 'khizar' do
-  config = use_native_modules!
-# React Native Maps dependencies
-use_react_native!(:path => config["reactNativePath"])
-rn_maps_path = '../node_modules/react-native-maps'
+  rn_maps_path = '../node_modules/react-native-maps'
 pod 'react-native-google-maps', :path => rn_maps_path
 permissions_path = '../node_modules/react-native-permissions/ios'
 pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways"
 pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse"
+pod 'Firebase/Core'
+  pod 'Firebase/Messaging'
+  pod 'Firebase/Analytics'
+  config = use_native_modules!
+# React Native Maps dependencies
+use_react_native!(:path => config["reactNativePath"])
 
 
   target 'khizarTests' do
