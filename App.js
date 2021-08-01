@@ -128,12 +128,16 @@ const bottomStackScreen = () => {
 
 
 const App: () => Node = () => {
+  const navigation = useNavigation();
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+      console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));
     });
     // Register background handler
     messaging().setBackgroundMessageHandler(async remoteMessage => {
+      if(remoteMessage.body.includes("Thank")){
+      navigation.navigate('RideDetails', {rideEnd:true})
+      }
       console.log('Message handled in the background!', remoteMessage);
     });
 

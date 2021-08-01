@@ -654,8 +654,13 @@
 					"\"$(PODS_ROOT)/boost-for-react-native\"",
 					"\"$(PODS_ROOT)/Headers/Private/React-Core\"",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
-					"\"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/messaging\"\n\"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/messaging\"\n\"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/messaging\"\n$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/messaging/**",
-					"\"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/notifications\"\n\"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/notifications\"\n$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/notifications/**",
+					"\"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/messaging\"",
+					"\"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/messaging\"",
+					"\"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/messaging\"",
+					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/messaging/**",
+					"\"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/notifications\"",
+					"\"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/notifications\"",
+					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/notifications/**",
 					"\"$(PODS_TARGET_SRCROOT)/include/\"",
 				);
 				INFOPLIST_FILE = khizar/Info.plist;
@@ -746,8 +751,13 @@
 					"\"$(PODS_ROOT)/boost-for-react-native\"",
 					"\"$(PODS_ROOT)/Headers/Private/React-Core\"",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
-					"\"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/messaging\"\n\"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/messaging\"\n\"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/messaging\"\n$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/messaging/**",
-					"\"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/notifications\"\n\"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/notifications\"\n$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/notifications/**",
+					"\"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/messaging\"",
+					"\"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/messaging\"",
+					"\"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/messaging\"",
+					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/messaging/**",
+					"\"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/notifications\"",
+					"\"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/notifications\"",
+					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/notifications/**",
 					"\"$(PODS_TARGET_SRCROOT)/include/\"",
 				);
 				INFOPLIST_FILE = khizar/Info.plist;

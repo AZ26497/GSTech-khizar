@@ -37,6 +37,7 @@
     "react-native-paper": "^4.9.1",
     "react-native-permissions": "^3.0.4",
     "react-native-pulse": "^1.0.7",
+    "react-native-ratings": "^8.1.0",
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "^3.3.0",
     "react-native-swipe-up-down": "^1.0.7",
